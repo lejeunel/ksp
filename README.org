@@ -1,0 +1,10 @@
+#+title: Readme
+
+* Next steps
+** TODO Check that provided source and sink are valid
+- Source should have only leaving edges
+- Sink should have only incoming edges
+
+** TODO Check that graph is acyclic
+- Do depth-first-search from source node
+- Apply method: [[https://takeuforward.org/data-structure/detect-cycle-in-a-directed-graph-using-dfs-g-19/][Detect cycle in a directed graph (using DFS) : G 19]]

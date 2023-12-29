@@ -8,6 +8,7 @@ class Node {
     Node(int);
 
     int index;
+    bool visited = false; //used for topological sort
 
     scalar_t distance_from_source;
     Edge *pred_edge_toward_source;
