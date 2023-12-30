@@ -13,8 +13,8 @@ public:
 
 private:
   std::unique_ptr<Graph> graph;
-  int source;
-  int sink;
+  std::shared_ptr<Node> source;
+  std::shared_ptr<Node> sink;
 
 };
 

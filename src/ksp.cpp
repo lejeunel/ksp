@@ -6,15 +6,15 @@ using namespace std;
 
 
 KSP::KSP(unique_ptr<Graph> a_graph, int a_source, int a_sink){
-   this->graph = move(a_graph);
-   this->source = a_source;
-   this->sink = a_sink;
+   graph = move(a_graph);
+   source = std::make_shared<Node>(a_source);
+   sink = std::make_shared<Node>(a_sink);
 }
 
 vector<Path> KSP::run(int k){
     auto path = Path();
-    path.append(std::make_shared<Node>(0));
-    path.append(std::make_shared<Node>(1));
+    path.append(source);
+    path.append(sink);
     vector<Path> result = {path};
 
     return result;

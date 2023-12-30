@@ -1,10 +1,15 @@
 #include "include/node.h"
 #include "include/edge.h"
 #include <algorithm>
+#include <memory>
 
-Node::Node(int _index) {
+Node::Node(int a_id) {
   leaving_edge_list_root = 0;
-  index=_index;
+  id=a_id;
+}
+
+int Node::get_id(){
+    return id;
 }
 
 void Node::add_leaving_edge(Edge *e) {

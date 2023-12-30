@@ -11,7 +11,7 @@ public:
   Path();
 
   void append(std::shared_ptr<Node>);
-  int get_id_at_position(int);
+  std::shared_ptr<Node> operator[](int);
   void print();
   scalar_t length;
 

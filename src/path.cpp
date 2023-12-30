@@ -9,9 +9,9 @@ void Path::append(std::shared_ptr<Node> node){
   nodes.push_back(node);
 };
 
-int Path::get_id_at_position(int pos){
-  return nodes[pos]->index;
-};
+std::shared_ptr<Node> Path::operator[](int pos){
+  return nodes[pos];
+}
 
 void Path::print() {
 
