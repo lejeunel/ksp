@@ -1,5 +1,5 @@
 #include "include/path.h"
-#include "include/graph.h"
+#include "include/directed_graph.h"
 #include <iostream>
 #include <memory>
 

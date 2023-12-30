@@ -9,7 +9,8 @@ class Edge {
 public:
     Edge(std::shared_ptr<Node> _start_node,
                 std::shared_ptr<Node> _end_node, scalar_t _length);
-
+    std::shared_ptr<Node> get_start_node();
+    std::shared_ptr<Node> get_end_node();
 
     inline void invert();
   private:

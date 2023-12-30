@@ -1,21 +1,23 @@
 #ifndef KSP_H_
 #define KSP_H_
 
-#include "graph.h"
+#include "directed_graph.h"
 #include "path.h"
 #include <memory>
+#include <expected>
+#include <string>
 
 class KSP {
 
 public:
-  KSP(std::unique_ptr<Graph> graph, int source, int sink);
-  std::vector<Path> run(int);
+  KSP(std::unique_ptr<DirectedGraph> graph, int source, int sink);
+  std::expected<std::vector<Path>, std::string> run(int);
   bool validate_source();
   bool validate_sink();
   bool validate_source_sink();
 
 private:
-  std::unique_ptr<Graph> graph;
+  std::unique_ptr<DirectedGraph> graph;
   std::shared_ptr<Node> source;
   std::shared_ptr<Node> sink;
 

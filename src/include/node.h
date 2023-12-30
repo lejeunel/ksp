@@ -22,7 +22,6 @@ class Node {
     std::vector<std::shared_ptr<Edge>> incoming_edges;
     std::vector<std::shared_ptr<Node>> heap_slot;
 
-    bool visited = false; //used for topological sort
     scalar_t distance_from_source;
 };
 

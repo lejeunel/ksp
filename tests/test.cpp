@@ -1,4 +1,4 @@
-#include "../src/include/graph.h"
+#include "../src/include/directed_graph.h"
 #include "../src/include/ksp.h"
 #include "../src/include/misc.h"
 #include <catch2/catch_test_macros.hpp>
@@ -16,10 +16,11 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
 
   SECTION("should retrieve a single path from source to sink") {
     auto ksp =
-        KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
+        KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
                                     weights),
             source_node, sink_node);
-    auto paths = ksp.run(k);
+    auto result = ksp.run(k);
+    auto paths = result.value();
 
     REQUIRE(paths.size() == 1);
     REQUIRE(paths[0][0]->get_id() == 0);
@@ -29,20 +30,25 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
   SECTION("""Should detect that source has only leaving\
  edges and sink only incoming edges""",
  "[validation]") {
-    auto invalid_ksp =
-        KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
+    auto ksp =
+        KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
                                     weights),
             sink_node, source_node);
-    bool is_valid = invalid_ksp.validate_source_sink();
-    REQUIRE(is_valid == false);
+    auto result = ksp.run(1);
 
-    auto valid_ksp =
-        KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
+    REQUIRE(result.has_value() == false);
+  }
+
+  SECTION("""Should detect that source has only incoming\
+ edges and sink only leaving edges""",
+ "[validation]") {
+    auto ksp =
+        KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
                                     weights),
             source_node, sink_node);
 
-    is_valid = valid_ksp.validate_source_sink();
-    REQUIRE(is_valid == true);
+    auto result = ksp.run(1);
+    REQUIRE(result.has_value() == true);
 
   }
 }

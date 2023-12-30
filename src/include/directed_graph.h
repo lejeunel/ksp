@@ -10,13 +10,14 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
-// Graph class represents a directed graph
-// using adjacency list representation
-class Graph {
+class DirectedGraph {
 public:
-  Graph(int n_nodes, int n_edges, int *node_from, int *node_to,
+  DirectedGraph(int n_nodes, int n_edges, int *node_from, int *node_to,
         scalar_t *weights); // Constructor
-  std::shared_ptr<Node> get_node(int);
+  std::shared_ptr<Node> get_node(const int&);
+  bool has_cycle();
+  bool dfs_check_cycle_from_node(const int& node_idx, std::vector<bool>& visited,
+                                              std::vector<bool> visited_in_path);
 
 
 private:

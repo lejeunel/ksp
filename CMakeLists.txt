@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(ksp)
 
 set(SOURCES
-    src/graph.cpp
+    src/directed_graph.cpp
     src/ksp.cpp
     src/path.cpp
     src/node.cpp
@@ -20,5 +22,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(test tests/test.cpp ${SOURCES})
+# test suite
+add_executable(test tests/test.cpp tests/test_cycle.cpp ${SOURCES})
+target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
 target_link_libraries(test PRIVATE Catch2::Catch2WithMain)
