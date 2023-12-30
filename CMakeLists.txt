@@ -8,6 +8,7 @@ set(SOURCES
     src/path.cpp
     src/node.cpp
     src/edge.cpp
+    src/easylogging++.cpp
 )
 
 Include(FetchContent)

@@ -17,7 +17,7 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
   SECTION("should retrieve a single path from source to sink") {
     auto ksp =
         KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
-                                    weights, source_node, sink_node),
+                                    weights),
             source_node, sink_node);
     auto paths = ksp.run(k);
 
@@ -29,19 +29,20 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
   SECTION("""Should detect that source has only leaving\
  edges and sink only incoming edges""",
  "[validation]") {
-    // auto valid_ksp =
-    //     KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
-    //                                 weights, source_node, sink_node),
-    //         source_node, sink_node);
+    auto invalid_ksp =
+        KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
+                                    weights),
+            sink_node, source_node);
+    bool is_valid = invalid_ksp.validate_source_sink();
+    REQUIRE(is_valid == false);
 
-    // bool is_valid = valid_ksp.validate_source_sink();
-    // REQUIRE(is_valid == true);
+    auto valid_ksp =
+        KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
+                                    weights),
+            source_node, sink_node);
 
-    // auto invalid_ksp =
-    //     KSP(std::make_unique<Graph>(n_nodes, n_edges, nodes_in, nodes_out,
-    //                                 weights, sink_node, source_node),
-    //         source_node, sink_node);
-    // bool is_valid = invalid_ksp.validate_source_sink();
-    // REQUIRE(is_valid == false);
+    is_valid = valid_ksp.validate_source_sink();
+    REQUIRE(is_valid == true);
+
   }
 }
