@@ -12,7 +12,7 @@ KSP::KSP(std::unique_ptr<DirectedGraph> a_graph, int a_source, int a_sink){
 }
 
 std::expected<std::vector<Path>, std::string> KSP::run(int k){
-    if(validate_source_sink() == false){
+    if(validate_source() == false){
         return std::unexpected{
             "source and/or sink are not valid nodes."};
     }
@@ -31,22 +31,8 @@ std::expected<std::vector<Path>, std::string> KSP::run(int k){
 
 
 bool KSP::validate_source(){
-    if ((source->get_leaving_edges().size() > 0) &&
-        (source->get_incoming_edges().size() == 0)){
+    if ((*graph)[source->get_id()].size() > 0){
             return true;
         }
     return false;
-}
-
-bool KSP::validate_sink(){
-    if ((sink->get_incoming_edges().size() > 0) &&
-        (sink->get_leaving_edges().size() == 0)){
-            return true;
-        }
-    return false;
-}
-
-bool KSP::validate_source_sink(){
-    return validate_source() & validate_sink();
-
 }

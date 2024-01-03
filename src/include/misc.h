@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 typedef float scalar_t;
+
 const scalar_t INF_LENGTH = std::numeric_limits<scalar_t>::max();
 
 #ifdef DEBUG

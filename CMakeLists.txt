@@ -24,5 +24,5 @@ FetchContent_MakeAvailable(Catch2)
 
 # test suite
 add_executable(test tests/test.cpp tests/test_cycle.cpp ${SOURCES})
-target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
+# target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
 target_link_libraries(test PRIVATE Catch2::Catch2WithMain)

@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstdint>
 #include <float.h>
 #include <iostream>
 #include "path.h"
@@ -15,9 +16,10 @@ public:
   DirectedGraph(int n_nodes, int n_edges, int *node_from, int *node_to,
         scalar_t *weights); // Constructor
   std::shared_ptr<Node> get_node(const int&);
+  std::vector<std::shared_ptr<Edge>> operator[](const int&);
   bool has_cycle();
-  bool dfs_check_cycle_from_node(const int& node_idx, std::vector<bool>& visited,
-                                              std::vector<bool> visited_in_path);
+  bool dfs_check_cycle_from_node(const int& node_idx, std::vector<uint8_t>& visited,
+                                              std::vector<uint8_t> visited_in_path);
 
 
 private:

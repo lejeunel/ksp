@@ -27,8 +27,7 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
     REQUIRE(paths[0][1]->get_id() == 1);
   }
 
-  SECTION("""Should detect that source has only leaving\
- edges and sink only incoming edges""",
+  SECTION("""Should detect that source has no leaving edges""",
  "[validation]") {
     auto ksp =
         KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
@@ -39,8 +38,7 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
     REQUIRE(result.has_value() == false);
   }
 
-  SECTION("""Should detect that source has only incoming\
- edges and sink only leaving edges""",
+  SECTION("""Should detect that source has leaving edges""",
  "[validation]") {
     auto ksp =
         KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,

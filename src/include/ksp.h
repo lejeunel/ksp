@@ -13,8 +13,7 @@ public:
   KSP(std::unique_ptr<DirectedGraph> graph, int source, int sink);
   std::expected<std::vector<Path>, std::string> run(int);
   bool validate_source();
-  bool validate_sink();
-  bool validate_source_sink();
+
 
 private:
   std::unique_ptr<DirectedGraph> graph;

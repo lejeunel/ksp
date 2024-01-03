@@ -1,11 +1,11 @@
 #include "include/edge.h"
 #include <algorithm>
 
-Edge::Edge(std::shared_ptr<Node> _start_node, std::shared_ptr<Node> _end_node,
+Edge::Edge(std::shared_ptr<Node> _source_node, std::shared_ptr<Node> _target_node,
            scalar_t _length) {
   length = _length;
-  start_node = _start_node;
-  end_node = _end_node;
+  source_node = _source_node;
+  target_node = _target_node;
 }
 
 void Edge::invert() {
@@ -13,5 +13,5 @@ void Edge::invert() {
   positivized_length = -positivized_length;
 }
 
-std::shared_ptr<Node> Edge::get_start_node() { return start_node; }
-std::shared_ptr<Node> Edge::get_end_node() { return end_node; }
+std::shared_ptr<Node> Edge::get_source_node() { return source_node; }
+std::shared_ptr<Node> Edge::get_target_node() { return target_node; }
