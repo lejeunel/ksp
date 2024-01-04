@@ -5,13 +5,10 @@
 
 Path::Path() {}
 
-void Path::append(std::shared_ptr<Node> node){
-  nodes.push_back(node);
-};
+void Path::append(const int &id) { nodes.push_back(id); };
 
-std::shared_ptr<Node> Path::operator[](int pos){
-  return nodes[pos];
-}
+int Path::operator[](int pos) { return nodes[pos]; }
+bool Path::operator==(const std::vector<int> &rhs) { return nodes == rhs; }
 
 void Path::print() {
 

@@ -1,38 +1,42 @@
 #include "include/ksp.h"
+#include "include/bellman_ford.h"
+#include "include/common.h"
 #include "include/path.h"
-#include <memory>
-#include <vector>
-#include "include/easylogging++.h"
 #include <iostream>
 
-KSP::KSP(std::unique_ptr<DirectedGraph> a_graph, int a_source, int a_sink){
-   graph = std::move(a_graph);
-   source = graph->get_node(a_source);
-   sink = graph->get_node(a_sink);
+INITIALIZE_EASYLOGGINGPP
+
+KSP::KSP(const int &a_K, const bool &a_min_cost) {
+  K = a_K;
+  min_cost = a_min_cost;
 }
 
-std::expected<std::vector<Path>, std::string> KSP::run(int k){
-    if(validate_source() == false){
-        return std::unexpected{
-            "source and/or sink are not valid nodes."};
-    }
+KSP::KSP() {}
 
-    if(graph->has_cycle()){
-        return std::unexpected{"found cycle"};
-    }
+std::expected<std::vector<Path>, std::string>
+KSP::run(std::unique_ptr<DirectedGraph> const &graph, const int &source,
+         const int &sink) {
+  if (validate_source(graph, source) == false) {
+    return std::unexpected{"source and/or sink are not valid nodes."};
+  }
 
-    auto path = Path();
-    path.append(source);
-    path.append(sink);
-    std::vector<Path> result = {path};
+  auto bf = BellmanFord(graph, source, true);
 
-    return result;
+  auto bf_result = bf.run(graph, source);
+  if (!bf_result.has_value()) {
+    return std::unexpected{bf_result.error()};
+  }
+
+  auto path = bf_result.value()[sink]->make_path_to_root();
+  std::vector<Path> res;
+  res.push_back(path);
+  return res;
 }
 
-
-bool KSP::validate_source(){
-    if ((*graph)[source->get_id()].size() > 0){
-            return true;
-        }
-    return false;
+bool KSP::validate_source(std::unique_ptr<DirectedGraph> const &graph,
+                          const int &source) {
+  if ((*graph)[source].size() > 0) {
+    return true;
+  }
+  return false;
 }

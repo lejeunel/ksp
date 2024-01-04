@@ -12,41 +12,32 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
   int n_edges = 1;
   int source_node = 0;
   int sink_node = 1;
-  int k = 1;
+  auto graph = std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in,
+                                               nodes_out, weights);
+  auto ksp = KSP();
 
   SECTION("should retrieve a single path from source to sink") {
-    auto ksp =
-        KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
-                                    weights),
-            source_node, sink_node);
-    auto result = ksp.run(k);
+    auto result = ksp.run(graph, source_node, sink_node);
     auto paths = result.value();
 
-    REQUIRE(paths.size() == 1);
-    REQUIRE(paths[0][0]->get_id() == 0);
-    REQUIRE(paths[0][1]->get_id() == 1);
+    REQUIRE(paths[0] == std::vector<int>{0, 1});
   }
 
-  SECTION("""Should detect that source has no leaving edges""",
- "[validation]") {
-    auto ksp =
-        KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
-                                    weights),
-            sink_node, source_node);
-    auto result = ksp.run(1);
+  SECTION(""
+          "Should detect that source has no leaving edges"
+          "",
+          "[validation]") {
+    auto result = ksp.run(graph, sink_node, source_node);
 
     REQUIRE(result.has_value() == false);
   }
 
-  SECTION("""Should detect that source has leaving edges""",
- "[validation]") {
-    auto ksp =
-        KSP(std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in, nodes_out,
-                                    weights),
-            source_node, sink_node);
+  SECTION(""
+          "Should detect that source has leaving edges"
+          "",
+          "[validation]") {
 
-    auto result = ksp.run(1);
+    auto result = ksp.run(graph, source_node, sink_node);
     REQUIRE(result.has_value() == true);
-
   }
 }

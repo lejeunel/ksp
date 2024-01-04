@@ -6,10 +6,12 @@ project(ksp)
 
 set(SOURCES
     src/directed_graph.cpp
+    src/bellman_ford.cpp
     src/ksp.cpp
     src/path.cpp
     src/node.cpp
     src/edge.cpp
+    src/utils.cpp
     src/easylogging++.cpp
 )
 
@@ -23,6 +25,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 # test suite
-add_executable(test tests/test.cpp tests/test_cycle.cpp ${SOURCES})
-# target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
+add_executable(test tests/test.cpp tests/test_bf.cpp ${SOURCES})
+target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
 target_link_libraries(test PRIVATE Catch2::Catch2WithMain)
