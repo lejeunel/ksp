@@ -1,6 +1,5 @@
 #include "include/directed_graph.h"
 #include "include/easylogging++.h"
-#include <iostream>
 
 DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,
                              int *_node_to, scalar_t *_weights) {

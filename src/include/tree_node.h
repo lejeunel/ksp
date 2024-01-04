@@ -1,6 +1,5 @@
 #ifndef TREE_NODE_H_
 #define TREE_NODE_H_
-#include "easylogging++.h"
 #include "node.h"
 #include "path.h"
 
@@ -20,16 +19,13 @@ public:
   float get_dist_from_root() { return dist_from_root; }
   NodePtr get_node() { return node; }
   EdgeList get_leaving_edges() { return node->get_leaving_edges(); }
-  Path make_path_to_root() {
-    LOG(DEBUG) << "making path to root from id: " << node->get_id();
+  Path make_path_from_root() {
     Path res;
     res.append(node->get_id());
     auto pred = get_predecessor();
     while (pred != nullptr) {
-      LOG(DEBUG) << "pred id: " << pred->get_node()->get_id();
       auto id = pred->get_node()->get_id();
       res.append(id);
-      LOG(DEBUG) << "append to path: " << id;
       pred = pred->get_predecessor();
     }
 

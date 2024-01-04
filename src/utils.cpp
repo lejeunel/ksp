@@ -14,13 +14,13 @@ std::vector<int> make_indices(const int &size) {
 }
 
 std::expected<std::vector<int>, std::string>
-topological_sort(std::unique_ptr<DirectedGraph> const &graph) {
+topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
 
   auto n_nodes = graph->n_nodes();
 
+  // compute in-degree of each node
   std::vector<int> indegree(n_nodes, 0);
   int tgt_id;
-  // Code for make indegree
   for (int n = 0; n < n_nodes; n++) {
     for (auto e : graph->get_node(n)->get_leaving_edges()) {
       tgt_id = e->get_target_node()->get_id();
@@ -28,10 +28,10 @@ topological_sort(std::unique_ptr<DirectedGraph> const &graph) {
     }
   }
 
-  std::vector<int> ans;
-  std::queue<int> qrr;
   // Initially insert elements who has
   // indegree 0
+  std::vector<int> ans;
+  std::queue<int> qrr;
   for (int n = 0; n < n_nodes; n++) {
 
     if (indegree[n] == 0) {
@@ -39,6 +39,7 @@ topological_sort(std::unique_ptr<DirectedGraph> const &graph) {
     }
   }
 
+  int count = 0;
   while (!qrr.empty()) {
     // push those elements in queue which
     // poses 0 indegree
@@ -53,6 +54,11 @@ topological_sort(std::unique_ptr<DirectedGraph> const &graph) {
         qrr.push(tgt_id);
       }
     }
+    count++;
+  }
+  // Check if there was a cycle
+  if (count != n_nodes) {
+    return std::unexpected{"Found cycle in graph."};
   }
   return ans;
 }

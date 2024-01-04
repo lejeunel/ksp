@@ -1,6 +1,7 @@
 #ifndef KSP_H_
 #define KSP_H_
 
+#include "bellman_ford.h"
 #include "common.h"
 #include "directed_graph.h"
 #include "path.h"
@@ -10,17 +11,15 @@
 class KSP {
 
 public:
-  KSP(const int &k, const bool &min_cost);
-  KSP();
-  std::expected<std::vector<Path>, std::string>
-  run(std::unique_ptr<DirectedGraph> const &graph, const int &source,
-      const int &sink);
-  bool validate_source(std::unique_ptr<DirectedGraph> const &graph,
-                       const int &source);
+  KSP(std::shared_ptr<DirectedGraph> graph, const int &source, const int &sink);
+  std::expected<std::vector<Path>, std::string> run();
+  bool validate_source(std::shared_ptr<DirectedGraph> graph, const int &source);
 
 private:
-  NodePtr source;
-  NodePtr sink;
+  int source;
+  int sink;
+  std::unique_ptr<BellmanFord> bfd;
+  std::shared_ptr<DirectedGraph> graph;
 
   // parameters
   bool min_cost = false;

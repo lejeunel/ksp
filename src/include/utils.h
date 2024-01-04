@@ -9,7 +9,7 @@
 #include <vector>
 
 std::expected<std::vector<int>, std::string>
-topological_sort(std::unique_ptr<DirectedGraph> const &graph);
+topological_sort(std::shared_ptr<DirectedGraph> const &graph);
 
 std::vector<int> make_indices(const int &size);
 
