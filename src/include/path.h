@@ -7,16 +7,19 @@
 class Path {
 public:
   Path();
+  Path(EdgeList const &);
 
-  void append(const int &id);
-  int operator[](int);
+  EdgePtr operator[](int);
+  bool operator==(const Path &rhs);
   bool operator==(const std::vector<int> &rhs);
-  void reverse() { std::reverse(nodes.begin(), nodes.end()); }
   void print();
-  scalar_t length;
+  scalar_t get_length() { return length; }
+  void invert_edges();
+  void set_occupied(const bool &);
 
 private:
-  std::vector<int> nodes;
+  EdgeList edges;
+  scalar_t length = 0;
 };
 
 #endif // PATH_H_

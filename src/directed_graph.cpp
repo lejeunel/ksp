@@ -9,14 +9,27 @@ DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,
     nodes.push_back(std::make_shared<Node>(i));
   }
 
-  LOG(DEBUG) << "n_edges: " << _n_edges;
   for (int i = 0; i < _n_edges; i++) {
-    auto e = std::make_shared<Edge>(nodes[_node_from[i]], nodes[_node_to[i]],
-                                    _weights[i]);
-    LOG(DEBUG) << "adding edge: " << e->get_source_node()->get_id() << "->"
-               << e->get_target_node()->get_id();
-    nodes[_node_from[i]]->add_leaving_edge(e);
+    auto e_out = std::make_shared<Edge>(nodes[_node_from[i]],
+                                        nodes[_node_to[i]], _weights[i], false);
+    nodes[_node_from[i]]->add_out_edge(e_out);
   }
 }
 
 NodePtr DirectedGraph::operator[](const int &id) { return nodes[id]; }
+
+void DirectedGraph::print() {
+  for (auto in : nodes) {
+    for (auto e : in->out_edges) {
+      auto out = e->target_node;
+      auto l = e->length;
+      auto o = e->occupied;
+      LOG(INFO) << "node: " << in->id << " / " << in << ", edge: ("
+                << e->source_node->id << ", " << e->source_node << ")"
+                << "->"
+                << "(" << e->target_node->id << ", " << e->target_node << ")"
+                << " / length: " << l << " / occup.: " << o
+                << " / tgt_dist_to_root: " << e->target_node->dist_from_root;
+    }
+  }
+}

@@ -23,8 +23,8 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
   std::vector<int> indegree(n_nodes, 0);
   int tgt_id;
   for (int n = 0; n < n_nodes; n++) {
-    for (auto e : (*graph)[n]->get_out_edges()) {
-      tgt_id = e->get_target_node()->get_id();
+    for (auto e : (*graph)[n]->out_edges) {
+      tgt_id = e->target_node->get_id();
       indegree[tgt_id]++;
     }
   }
@@ -48,8 +48,8 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
 
     qrr.pop();
     ans.push_back(node);
-    for (auto e : (*graph)[node]->get_out_edges()) {
-      tgt_id = e->get_target_node()->get_id();
+    for (auto e : (*graph)[node]->out_edges) {
+      tgt_id = e->target_node->get_id();
       indegree[tgt_id]--;
       if (indegree[tgt_id] == 0) {
         qrr.push(tgt_id);

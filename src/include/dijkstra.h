@@ -14,7 +14,6 @@ public:
 
 private:
   std::shared_ptr<DirectedGraph> graph;
-  std::vector<std::shared_ptr<Node>> tree_nodes;
   int source;
 };
 

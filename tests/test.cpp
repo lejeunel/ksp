@@ -17,10 +17,11 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
 
   SECTION("should retrieve a single path from source to sink") {
     auto ksp = KSP(graph, source_node, sink_node);
-    auto result = ksp.run();
+    auto result = ksp.run(1);
     auto paths = result.value();
 
     REQUIRE(paths[0] == std::vector<int>{0, 1});
+    REQUIRE(paths[0].get_length() == -1);
   }
 
   SECTION(""
@@ -28,7 +29,7 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
           "",
           "[validation]") {
     auto ksp = KSP(graph, sink_node, source_node);
-    auto result = ksp.run();
+    auto result = ksp.run(1);
 
     REQUIRE(result.has_value() == false);
   }
@@ -39,7 +40,7 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
           "[validation]") {
 
     auto ksp = KSP(graph, source_node, sink_node);
-    auto result = ksp.run();
+    auto result = ksp.run(1);
     REQUIRE(result.has_value() == true);
   }
 }

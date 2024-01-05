@@ -14,20 +14,15 @@ public:
     out_edges = n.out_edges;
   }
   int get_id();
-  void add_leaving_edge(EdgePtr);
-  void del_leaving_edge(EdgePtr);
-  EdgeList get_out_edges();
-  void set_predecessor(NodePtr const &n) { predecessor = n; }
-  NodePtr get_predecessor() { return predecessor; }
-  void set_dist_from_root(float const &d) { dist_from_root = d; }
-  void set_deleted(bool const &val) { deleted = val; }
-  bool is_deleted() { return deleted; }
-  float get_dist_from_root() { return dist_from_root; }
+  EdgePtr get_out_edge(const int &adj_id);
+  void add_out_edge(EdgePtr const &);
+  void add_in_edge(EdgePtr);
+  void del_out_edge(EdgePtr);
   Path make_path_from_root();
 
-private:
   int id;
   EdgeList out_edges;
+  EdgeList in_edges;
   NodePtr predecessor;
   float dist_from_root;
   bool deleted;

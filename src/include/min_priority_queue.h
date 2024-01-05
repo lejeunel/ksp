@@ -6,7 +6,7 @@
 
 struct Compare {
   bool operator()(NodePtr const &a, NodePtr const &b) {
-    return a->get_dist_from_root() > b->get_dist_from_root();
+    return a->dist_from_root > b->dist_from_root;
   }
 };
 

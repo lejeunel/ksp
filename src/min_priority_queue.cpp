@@ -8,7 +8,7 @@ NodePtr MinPriorityQueue::extract_non_deleted_min() {
   while (true) {
     auto n = q.top();
     q.pop();
-    if (!n->is_deleted()) {
+    if (!n->deleted) {
       return n;
     }
   }
