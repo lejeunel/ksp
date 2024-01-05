@@ -9,7 +9,7 @@ Path::Path(EdgeList const &edge_list) {
 
   edges = edge_list;
   for (auto e : edges) {
-    length += e->length;
+    length += e->orig_length;
   }
 }
 
@@ -56,9 +56,6 @@ void Path::print() {
 
 void Path::invert_edges() {
   for (auto e : edges) {
-    LOG(DEBUG) << "inverting edge (" << e->source_node->id << ", "
-               << e->source_node << ") "
-               << "-> (" << e->target_node->id << ", " << e->target_node << ")";
     e->length = -e->length;
     e->source_node->del_out_edge(e);
 
@@ -66,20 +63,6 @@ void Path::invert_edges() {
 
     (e->source_node).swap(e->target_node);
     orig_tgt->add_out_edge(e);
-
-    LOG(DEBUG) << "inverted edge (" << e->source_node->id << ", "
-               << e->source_node << ") "
-               << "-> (" << e->target_node->id << ", " << e->target_node << ")";
-
-    LOG(DEBUG) << "num out edge in node " << orig_tgt->id << ": "
-               << orig_tgt->out_edges.size();
-    for (auto e : orig_tgt->out_edges) {
-
-      LOG(DEBUG) << "(" << e->source_node->id << ", " << e->source_node << ") "
-                 << "-> (" << e->target_node->id << ", " << e->target_node
-                 << ")";
-    }
-    break;
   }
 }
 

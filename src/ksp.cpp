@@ -45,45 +45,39 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     return paths;
   }
 
-  LOG(INFO) << "graph:";
-  graph->print();
-
   while (true) {
     // Use the current distance from the source to make all edge
     // lengths positive
     update_lengths();
     // Fix numerical errors
-    // clip_lengths();
+    clip_lengths();
 
-    LOG(INFO) << "pre-dijkstra graph:";
     graph->print();
-
     // run single-source non-negative weights shortest-path
     djk->run();
 
-    LOG(INFO) << "post-dijkstra graph:";
-    graph->print();
-
     auto path = sink_node->make_path_from_root();
-    LOG(INFO) << "dijkstra path:";
-    path.print();
+    paths.push_back(path);
 
     // Invert all the edges along the best path
     path.invert_edges();
-    LOG(INFO) << "post-inversion graph:";
-    graph->print();
     path.set_occupied(true);
 
-    paths.push_back(path);
-
+    LOG(INFO) << "k: " << iter << " shortest-path cost: " << path.get_length();
     ++iter;
+
     if (iter > k) {
       break;
     }
-
-    LOG(INFO) << "k: " << iter << " shortest-path cost: " << path.get_length();
   }
 
+  // Put back the graph in its original state (i.e. invert edges which
+  // have been inverted in the process)
+
+  for (auto p : paths) {
+
+    p.invert_edges();
+  }
   return paths;
 }
 

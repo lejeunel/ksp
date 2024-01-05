@@ -24,12 +24,9 @@ void DirectedGraph::print() {
       auto out = e->target_node;
       auto l = e->length;
       auto o = e->occupied;
-      LOG(INFO) << "node: " << in->id << " / " << in << ", edge: ("
-                << e->source_node->id << ", " << e->source_node << ")"
-                << "->"
-                << "(" << e->target_node->id << ", " << e->target_node << ")"
-                << " / length: " << l << " / occup.: " << o
-                << " / tgt_dist_to_root: " << e->target_node->dist_from_root;
+      LOG(DEBUG) << e->source_node->id << "->" << e->target_node->id
+                 << " / length: " << l << " / occup.: " << o
+                 << " / tgt_dist_to_root: " << e->target_node->dist_from_root;
     }
   }
 }

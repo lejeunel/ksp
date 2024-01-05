@@ -9,7 +9,8 @@
 class Dijkstra {
 
 public:
-  Dijkstra(std::shared_ptr<DirectedGraph> graph, const int &source);
+  Dijkstra(std::shared_ptr<DirectedGraph> a_graph, const int &a_source)
+      : graph(a_graph), source(a_source) {}
   std::expected<std::vector<NodePtr>, std::string> run();
 
 private:

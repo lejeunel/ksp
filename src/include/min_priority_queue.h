@@ -14,7 +14,7 @@ class MinPriorityQueue {
 
 public:
   void add_with_distance_priority(NodePtr const &);
-  NodePtr extract_non_deleted_min();
+  NodePtr extract_min();
   bool is_empty();
 
 private:

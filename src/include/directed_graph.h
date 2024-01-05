@@ -11,7 +11,6 @@ public:
                 scalar_t *weights); // Constructor
   int n_nodes() { return nodes.size(); };
   NodeList get_nodes() { return nodes; };
-  void replace_node(NodePtr n) { nodes[n->get_id()] = n; };
   NodePtr operator[](const int &);
   void print();
 

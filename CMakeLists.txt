@@ -34,5 +34,5 @@ add_executable(test
   tests/test_djk.cpp
   tests/test_ksp.cpp
   ${SOURCES})
-# target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
+target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
 target_link_libraries(test PRIVATE Catch2::Catch2WithMain)
