@@ -9,10 +9,10 @@ class DirectedGraph {
 public:
   DirectedGraph(int n_nodes, int n_edges, int *node_from, int *node_to,
                 scalar_t *weights); // Constructor
-  NodePtr get_node(const int &);
   int n_nodes() { return nodes.size(); };
   NodeList get_nodes() { return nodes; };
-  EdgeList operator[](const int &);
+  void set_node(NodePtr n) { nodes[n->get_id()] = n; };
+  NodePtr operator[](const int &);
 
   EdgeList edges;
   NodeList nodes;

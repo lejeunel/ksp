@@ -19,7 +19,4 @@ DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,
   }
 }
 
-NodePtr DirectedGraph::get_node(const int &id) { return nodes[id]; }
-std::vector<std::shared_ptr<Edge>> DirectedGraph::operator[](const int &id) {
-  return nodes[id]->get_leaving_edges();
-}
+NodePtr DirectedGraph::operator[](const int &id) { return nodes[id]; }

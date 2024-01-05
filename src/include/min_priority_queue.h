@@ -1,11 +1,11 @@
 #ifndef MIN_PRIORITY_QUEUE_H_
 #define MIN_PRIORITY_QUEUE_H_
 #include "common.h"
-#include "tree_node.h"
+#include "node.h"
 #include <queue>
 
 struct Compare {
-  bool operator()(SPTreeNodePtr const &a, SPTreeNodePtr const &b) {
+  bool operator()(NodePtr const &a, NodePtr const &b) {
     return a->get_dist_from_root() > b->get_dist_from_root();
   }
 };
@@ -13,12 +13,11 @@ struct Compare {
 class MinPriorityQueue {
 
 public:
-  void add_with_distance_priority(SPTreeNodePtr const &);
-  SPTreeNodePtr extract_non_deleted_min();
+  void add_with_distance_priority(NodePtr const &);
+  NodePtr extract_non_deleted_min();
   bool is_empty();
 
 private:
-  std::vector<SPTreeNodePtr> tree_nodes;
-  std::priority_queue<SPTreeNodePtr, std::vector<SPTreeNodePtr>, Compare> q;
+  std::priority_queue<NodePtr, std::vector<NodePtr>, Compare> q;
 };
 #endif // MIN_PRIORITY_QUEUE_H_

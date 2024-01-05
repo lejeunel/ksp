@@ -23,7 +23,7 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
   std::vector<int> indegree(n_nodes, 0);
   int tgt_id;
   for (int n = 0; n < n_nodes; n++) {
-    for (auto e : graph->get_node(n)->get_leaving_edges()) {
+    for (auto e : (*graph)[n]->get_out_edges()) {
       tgt_id = e->get_target_node()->get_id();
       indegree[tgt_id]++;
     }
@@ -48,7 +48,7 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
 
     qrr.pop();
     ans.push_back(node);
-    for (auto e : graph->get_node(node)->get_leaving_edges()) {
+    for (auto e : (*graph)[node]->get_out_edges()) {
       tgt_id = e->get_target_node()->get_id();
       indegree[tgt_id]--;
       if (indegree[tgt_id] == 0) {
@@ -62,22 +62,4 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
     return std::unexpected{"Found cycle in graph."};
   }
   return ans;
-}
-
-std::vector<SPTreeNodePtr>
-Utils::init_tree_nodes(std::shared_ptr<DirectedGraph> const &graph,
-                       const int &source) {
-  std::vector<SPTreeNodePtr> tree_nodes;
-  LOG(DEBUG) << "Initializing tree nodes with root " << source;
-  for (auto n : graph->get_nodes()) {
-    auto m = std::make_shared<SPTreeNode>(n->get_id(), n->get_leaving_edges());
-    if (n->get_id() == source) {
-      m->set_dist_from_root(0);
-    }
-    LOG(DEBUG) << "added treenode with id: " << m->get_id() << ", and "
-               << m->get_leaving_edges().size() << " leaving edges";
-    tree_nodes.push_back(m);
-  }
-
-  return tree_nodes;
 }

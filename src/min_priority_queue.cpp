@@ -1,10 +1,10 @@
 #include "include/min_priority_queue.h"
 
-void MinPriorityQueue::add_with_distance_priority(SPTreeNodePtr const &n) {
+void MinPriorityQueue::add_with_distance_priority(NodePtr const &n) {
   q.push(n);
 }
 
-SPTreeNodePtr MinPriorityQueue::extract_non_deleted_min() {
+NodePtr MinPriorityQueue::extract_non_deleted_min() {
   while (true) {
     auto n = q.top();
     q.pop();

@@ -3,7 +3,6 @@
 #include "common.h"
 #include "directed_graph.h"
 #include "min_priority_queue.h"
-#include "tree_node.h"
 #include "utils.h"
 #include <expected>
 
@@ -11,11 +10,11 @@ class Dijkstra {
 
 public:
   Dijkstra(std::shared_ptr<DirectedGraph> graph, const int &source);
-  std::expected<std::vector<SPTreeNodePtr>, std::string> run();
+  std::expected<std::vector<NodePtr>, std::string> run();
 
 private:
   std::shared_ptr<DirectedGraph> graph;
-  std::vector<std::shared_ptr<SPTreeNode>> tree_nodes;
+  std::vector<std::shared_ptr<Node>> tree_nodes;
   int source;
 };
 

@@ -13,7 +13,6 @@ set(SOURCES
     src/node.cpp
     src/edge.cpp
     src/utils.cpp
-    src/tree_node.cpp
     src/min_priority_queue.cpp
     src/easylogging++.cpp
 )

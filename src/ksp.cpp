@@ -31,7 +31,7 @@ std::expected<std::vector<Path>, std::string> KSP::run() {
 
 bool KSP::validate_source(std::shared_ptr<DirectedGraph> graph,
                           const int &source) {
-  if (graph->get_node(source)->get_leaving_edges().size() > 0) {
+  if ((*graph)[source]->get_out_edges().size() > 0) {
     LOG(DEBUG) << "source node is valid";
     return true;
   }
