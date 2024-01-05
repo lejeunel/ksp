@@ -6,10 +6,12 @@
 
 class Node;
 class Edge;
+class SPTreeNode;
 
 typedef std::shared_ptr<Edge> EdgePtr;
 typedef std::vector<EdgePtr> EdgeList;
 typedef std::shared_ptr<Node> NodePtr;
+typedef std::shared_ptr<SPTreeNode> SPTreeNodePtr;
 typedef std::vector<NodePtr> NodeList;
 
 typedef float scalar_t;

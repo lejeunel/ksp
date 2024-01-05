@@ -10,7 +10,7 @@ KSP::KSP(std::shared_ptr<DirectedGraph> a_graph, const int &a_source,
   graph = a_graph;
   source = a_source;
   sink = a_sink;
-  bfd = std::make_unique<BellmanFord>(a_graph, source, true);
+  bfd = std::make_unique<BellmanFord>(a_graph, source);
 }
 
 std::expected<std::vector<Path>, std::string> KSP::run() {

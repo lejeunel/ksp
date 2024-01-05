@@ -4,14 +4,15 @@
 
 class Node {
 public:
-  Node(int);
+  Node(int const &);
+  Node(int const &id, EdgeList const &leaving_edges);
 
   int get_id();
   void add_leaving_edge(EdgePtr);
   void del_leaving_edge(EdgePtr);
   EdgeList get_leaving_edges();
 
-private:
+protected:
   int id;
   EdgeList leaving_edges;
 };

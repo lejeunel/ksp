@@ -1,9 +1,10 @@
 #include "include/utils.h"
 #include "include/common.h"
+#include "include/easylogging++.h"
 #include "include/edge.h"
 #include "include/misc.h"
 
-std::vector<int> make_indices(const int &size) {
+std::vector<int> Utils::make_indices(const int &size) {
   std::vector<int> indices;
   indices.reserve(size);
   for (size_t i = 0; i < size; ++i) {
@@ -14,7 +15,7 @@ std::vector<int> make_indices(const int &size) {
 }
 
 std::expected<std::vector<int>, std::string>
-topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
+Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
 
   auto n_nodes = graph->n_nodes();
 
@@ -61,4 +62,22 @@ topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
     return std::unexpected{"Found cycle in graph."};
   }
   return ans;
+}
+
+std::vector<SPTreeNodePtr>
+Utils::init_tree_nodes(std::shared_ptr<DirectedGraph> const &graph,
+                       const int &source) {
+  std::vector<SPTreeNodePtr> tree_nodes;
+  LOG(DEBUG) << "Initializing tree nodes with root " << source;
+  for (auto n : graph->get_nodes()) {
+    auto m = std::make_shared<SPTreeNode>(n->get_id(), n->get_leaving_edges());
+    if (n->get_id() == source) {
+      m->set_dist_from_root(0);
+    }
+    LOG(DEBUG) << "added treenode with id: " << m->get_id() << ", and "
+               << m->get_leaving_edges().size() << " leaving edges";
+    tree_nodes.push_back(m);
+  }
+
+  return tree_nodes;
 }

@@ -7,11 +7,14 @@ project(ksp)
 set(SOURCES
     src/directed_graph.cpp
     src/bellman_ford.cpp
+    src/dijkstra.cpp
     src/ksp.cpp
     src/path.cpp
     src/node.cpp
     src/edge.cpp
     src/utils.cpp
+    src/tree_node.cpp
+    src/min_priority_queue.cpp
     src/easylogging++.cpp
 )
 
@@ -25,6 +28,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 # test suite
-add_executable(test tests/test.cpp tests/test_bf.cpp tests/test_cycle.cpp ${SOURCES})
+add_executable(test
+  tests/test.cpp
+  tests/test_cycle.cpp
+  tests/test_bf.cpp
+  tests/test_djk.cpp
+  ${SOURCES})
 target_compile_definitions(test PUBLIC ELPP_DISABLE_LOGS)
 target_link_libraries(test PRIVATE Catch2::Catch2WithMain)

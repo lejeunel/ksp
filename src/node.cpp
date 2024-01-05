@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <memory>
 
-Node::Node(int a_id) { id = a_id; }
+Node::Node(const int &a_id) : id(a_id) {}
+Node::Node(int const &a_id, EdgeList const &a_leaving_edges)
+    : id(a_id), leaving_edges(a_leaving_edges) {}
 
 int Node::get_id() { return id; }
 

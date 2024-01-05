@@ -3,34 +3,21 @@
 #include "node.h"
 #include "path.h"
 
-class TreeNode {
+class SPTreeNode : public Node {
 private:
-  NodePtr node;
-  std::shared_ptr<TreeNode> predecessor_node;
+  SPTreeNodePtr predecessor_node;
   float dist_from_root;
+  bool deleted;
 
 public:
-  TreeNode(NodePtr a_node) : node(a_node), dist_from_root(FLT_MAX) {}
-  void set_predecessor(std::shared_ptr<TreeNode> const &n) {
-    predecessor_node = n;
-  }
-  std::shared_ptr<TreeNode> get_predecessor() { return predecessor_node; }
+  SPTreeNode(const int &a_id, const EdgeList &a_leaving_edges)
+      : Node(a_id, a_leaving_edges), dist_from_root(FLT_MAX), deleted(false) {}
+  void set_predecessor(SPTreeNodePtr const &n) { predecessor_node = n; }
+  SPTreeNodePtr get_predecessor() { return predecessor_node; }
   void set_dist_from_root(float const &d) { dist_from_root = d; }
+  void set_deleted() { deleted = true; }
+  bool is_deleted() { return deleted; }
   float get_dist_from_root() { return dist_from_root; }
-  NodePtr get_node() { return node; }
-  EdgeList get_leaving_edges() { return node->get_leaving_edges(); }
-  Path make_path_from_root() {
-    Path res;
-    res.append(node->get_id());
-    auto pred = get_predecessor();
-    while (pred != nullptr) {
-      auto id = pred->get_node()->get_id();
-      res.append(id);
-      pred = pred->get_predecessor();
-    }
-
-    res.reverse();
-    return res;
-  }
+  Path make_path_from_root();
 };
 #endif // TREE_NODE_H_

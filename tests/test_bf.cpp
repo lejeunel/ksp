@@ -1,5 +1,5 @@
+#include "../src/include/bellman_ford.h"
 #include "../src/include/directed_graph.h"
-#include "../src/include/ksp.h"
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
@@ -13,10 +13,9 @@ TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
   int sink_node = 2;
   auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
-  auto ksp = KSP(graph, source_node, sink_node);
+  auto bf = BellmanFord(graph, source_node);
+  auto result = bf.run();
+  auto path = result.value()[sink_node]->make_path_from_root();
 
-  auto result = ksp.run();
-  auto paths = result.value();
-
-  REQUIRE(paths[0] == std::vector<int>{0, 3, 1, 2});
+  REQUIRE(path == std::vector<int>{0, 3, 1, 2});
 }

@@ -12,9 +12,8 @@ TEST_CASE("Graph with cycle should return error", "[cycle]") {
   int sink_node = 2;
   auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
-  auto ksp = KSP(graph, source_node, sink_node);
-
-  auto result = ksp.run();
+  auto bf = BellmanFord(graph, source_node);
+  auto result = bf.run();
 
   REQUIRE(result.has_value() == false);
 }
