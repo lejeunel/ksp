@@ -14,6 +14,7 @@ public:
   bool operator==(const Path &rhs);
   bool is_equal(const std::vector<int> &rhs);
   void print();
+  std::string to_str();
   scalar_t get_length() { return length; }
   void set_occupied(const bool &);
   EdgeList get_edges() { return edges; }

@@ -47,11 +47,12 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
 
     auto first_path = std::make_shared<Path>();
     paths.push_back(std::make_shared<Path>(res.value()));
+    LOG(DEBUG) << paths[0]->to_str();
     return paths;
   }
 
   while (true) {
-    LOG(DEBUG) << "iter. " << iter << "/" << k;
+    LOG(INFO) << "iter. " << iter << "/" << k;
     // Use the current distance from the source to make all edge
     // lengths positive
     update_lengths();
@@ -188,8 +189,4 @@ void KSP::retrieve_all_paths() {
   }
 
   std::sort(paths.begin(), paths.end(), compare_paths_lengths());
-  for (auto p : paths) {
-    LOG(DEBUG) << "path with length: " << p->get_length();
-    p->print();
-  }
 }

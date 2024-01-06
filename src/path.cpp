@@ -9,11 +9,8 @@ Path::Path(EdgeList const &edge_list) {
 
   edges = edge_list;
   for (auto e : edges) {
-    LOG(DEBUG) << "e: " << e;
-    LOG(DEBUG) << "length: " << e->length;
     length += e->length;
   }
-  LOG(DEBUG) << "edges.size(): " << edges.size();
 }
 
 Path::Path(EdgePtr const &e) {
@@ -55,13 +52,20 @@ bool Path::is_equal(const std::vector<int> &rhs) {
   }
   return true;
 }
+std::string Path::to_str() {
 
-void Path::print() {
+  std::stringstream buffer;
   for (auto e : edges) {
-    LOG(DEBUG) << "(" << e->source_node->id << ", " << e->source_node << ") "
-               << "-> (" << e->target_node->id << ", " << e->target_node << ")";
+    buffer << "(" << e->source_node->id << " -> " << e->target_node->id
+           << "), ";
   }
+
+  buffer << " length: " << length;
+
+  return buffer.str();
 }
+
+void Path::print() { LOG(DEBUG) << this->to_str(); }
 
 void Path::set_occupied(const bool &val) {
   for (auto e : edges) {

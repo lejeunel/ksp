@@ -1,3 +1,4 @@
+#include "dot_parser.h"
 #include "edge.h"
 #include "node.h"
 #include "path.h"
@@ -8,7 +9,8 @@
 class DirectedGraph {
 public:
   DirectedGraph(int n_nodes, int n_edges, int *node_from, int *node_to,
-                scalar_t *weights); // Constructor
+                scalar_t *weights);
+  DirectedGraph(DiGraphEdges const &);
   int n_nodes() { return nodes.size(); };
   NodeList get_nodes() { return nodes; };
   NodePtr operator[](const int &);

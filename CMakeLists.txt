@@ -17,6 +17,11 @@ set(SOURCES
     src/easylogging++.cpp
 )
 
+add_executable(edksp
+  src/main.cpp
+  ${SOURCES})
+target_compile_definitions(edksp PUBLIC ELPP_DISABLE_DEBUG_LOGS)
+
 Include(FetchContent)
 FetchContent_Declare(
   Catch2

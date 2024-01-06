@@ -22,6 +22,7 @@ std::expected<Path, std::string> Node::make_path_from_root() {
   EdgeList edge_list;
   auto pred = predecessor;
   int curr_id = id;
+  LOG(DEBUG) << "curr_id:" << curr_id;
   while (pred != nullptr) {
     LOG(DEBUG) << "curr_id:" << curr_id;
     LOG(DEBUG) << "pred_id:" << pred->id;
