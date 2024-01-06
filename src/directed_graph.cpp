@@ -1,5 +1,4 @@
 #include "include/directed_graph.h"
-#include "include/easylogging++.h"
 #include <set>
 
 DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,

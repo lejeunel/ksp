@@ -1,4 +1,5 @@
 #include "dot_parser.h"
+#include "easylogging++.h"
 #include "edge.h"
 #include "node.h"
 #include "path.h"
