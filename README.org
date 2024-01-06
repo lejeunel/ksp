@@ -1,1 +1,30 @@
-#+title: Readme
+#+title: Edge-disjoint K-shortest-paths in C++
+
+* Implementation
+We implement the edge-disjoint K-shortest paths algorithm,
+which internally leverages [[https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm][Bellman–Ford]], and [[https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm][Dijkstra]] algorithms.
+The former serves as a pre-conditioning step to transform the graph
+from (possibly) negative weighted edges to non-negatives, and is implemented
+using topological sort for efficiency.
+The latter is implemented using a binary heap.
+
+* Installation
+#+begin_src sh
+cmake .
+make -j <n-jobs>
+#+end_src
+
+* Usage
+As a quick example, we provide an example graph coded in a human-readable [[https://en.wikipedia.org/wiki/DOT_(graph_description_language)][DOT]] file.
+Run the algorithm on ~example.dot~ using source node ~0~, sink node ~5~, and retrieve ~2~
+optimal edge-disjoint paths using:
+
+#+begin_src sh
+./build/edksp examples/example.dot 0 5 2
+#+end_src
+
+* Testing
+#+begin_src sh
+make test -j <n-jobs>
+./build/test -s
+#+end_src

@@ -1,6 +1,5 @@
 #ifndef STRUTILS_H_
 #define STRUTILS_H_
-#include "easylogging++.h"
 #include <expected>
 #include <fstream>
 #include <regex>
