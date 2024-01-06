@@ -3,6 +3,7 @@
 #include "include/common.h"
 #include "include/dijkstra.h"
 #include "include/easylogging++.h"
+#include "include/path.h"
 #include <exception>
 
 INITIALIZE_EASYLOGGINGPP
@@ -17,8 +18,7 @@ KSP::KSP(std::shared_ptr<DirectedGraph> a_graph, const int &a_source,
   djk = std::make_unique<Dijkstra>(a_graph, source);
 }
 
-std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
-  std::vector<Path> paths;
+std::expected<PathList, std::string> KSP::run(const int &k) {
   int iter = 1;
   scalar_t curr_cost;
 
@@ -38,10 +38,10 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
   if (!result.has_value()) {
     return std::unexpected{result.error()};
   }
-  auto curr_best_path = sink_node->make_path_from_root();
 
   if (k == 1) {
-    paths.push_back(curr_best_path);
+    auto first_path = std::make_shared<Path>(sink_node->make_path_from_root());
+    paths.push_back(first_path);
     return paths;
   }
 
@@ -52,18 +52,17 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     // Fix numerical errors
     clip_lengths();
 
-    graph->print();
     // run single-source non-negative weights shortest-path
     djk->run();
 
     auto path = sink_node->make_path_from_root();
-    paths.push_back(path);
 
     // Invert all the edges along the best path
-    path.invert_edges();
+    set_interlaced_on_path(path);
+    invert_edges_on_path(path);
     path.set_occupied(true);
 
-    LOG(INFO) << "k: " << iter << " shortest-path cost: " << path.get_length();
+    LOG(DEBUG) << "k: " << iter << " cost: " << path.get_length();
     ++iter;
 
     if (iter > k) {
@@ -73,11 +72,11 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
 
   // Put back the graph in its original state (i.e. invert edges which
   // have been inverted in the process)
+  reset_all_inverted_edges();
 
-  for (auto p : paths) {
+  retrieve_all_paths();
 
-    p.invert_edges();
-  }
+  reset_all_occupied_edges();
   return paths;
 }
 
@@ -106,5 +105,81 @@ void KSP::clip_lengths() {
         e->length = 0.0;
       }
     }
+  }
+}
+void KSP::invert_edge(EdgePtr const &e) {
+
+  e->length = -e->length;
+  e->source_node->del_out_edge(e);
+
+  auto orig_tgt = e->target_node;
+
+  (e->source_node).swap(e->target_node);
+  orig_tgt->add_out_edge(e);
+}
+
+void KSP::invert_edges_on_path(Path &p) {
+  for (auto e : p.get_edges()) {
+    if (!e->interlaced) {
+      invert_edge(e);
+    }
+  }
+}
+
+void KSP::set_interlaced_on_path(Path &p) {
+  for (auto e : p.get_edges()) {
+    if (e->occupied) {
+      e->interlaced = true;
+    }
+  }
+}
+
+void KSP::reset_all_inverted_edges() {
+
+  for (auto e : graph->edges) {
+    if (e->occupied) {
+      invert_edge(e);
+    }
+    e->length = e->orig_length;
+  }
+}
+
+void KSP::reset_all_occupied_edges() {
+
+  for (auto e : graph->edges) {
+    if (e->occupied) {
+      e->occupied = false;
+    }
+  }
+}
+
+void KSP::retrieve_all_paths() {
+
+  for (auto e : graph->nodes[source]->out_edges) {
+    if (e->occupied) {
+      e->used = true;
+      auto path = std::make_shared<Path>(e);
+      paths.push_back(path);
+    }
+  }
+
+  for (auto p : paths) {
+    auto e = (*p)[0];
+    while (e->target_node != graph->nodes[sink]) {
+      for (auto next_e : e->get_edges_at_head()) {
+        if ((next_e->occupied) && (!next_e->interlaced)) {
+          next_e->used = true;
+          p->append_edge(next_e);
+          e = next_e;
+          break;
+        }
+      }
+    }
+  }
+
+  std::sort(paths.begin(), paths.end(), compare_paths_lengths());
+  for (auto p : paths) {
+    LOG(DEBUG) << "path with length: " << p->get_length();
+    p->print();
   }
 }

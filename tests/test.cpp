@@ -20,8 +20,8 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
     auto result = ksp.run(1);
     auto paths = result.value();
 
-    REQUIRE(paths[0] == std::vector<int>{0, 1});
-    REQUIRE(paths[0].get_length() == -1);
+    REQUIRE(paths[0]->is_equal(std::vector<int>{0, 1}));
+    REQUIRE(paths[0]->get_length() == -1);
   }
 
   SECTION(""

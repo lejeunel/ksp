@@ -6,10 +6,13 @@
 
 class Node;
 class Edge;
+class Path;
 
 typedef std::shared_ptr<Edge> EdgePtr;
 typedef std::vector<EdgePtr> EdgeList;
 typedef std::shared_ptr<Node> NodePtr;
+typedef std::shared_ptr<Path> PathPtr;
+typedef std::vector<PathPtr> PathList;
 typedef std::vector<NodePtr> NodeList;
 
 typedef float scalar_t;

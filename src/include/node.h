@@ -11,6 +11,7 @@ public:
   EdgePtr get_out_edge(const int &adj_id);
   void add_out_edge(EdgePtr const &);
   void del_out_edge(EdgePtr);
+  void del_out_edges(const NodePtr &target_node);
   Path make_path_from_root();
 
   int id;

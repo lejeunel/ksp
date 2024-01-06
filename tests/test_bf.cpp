@@ -17,5 +17,5 @@ TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
   auto result = bf.run();
   auto path = result.value()[sink_node]->make_path_from_root();
 
-  REQUIRE(path == std::vector<int>{0, 3, 1, 2});
+  REQUIRE(path.is_equal(std::vector<int>{0, 3, 1, 2}));
 }

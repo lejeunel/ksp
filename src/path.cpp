@@ -9,8 +9,14 @@ Path::Path(EdgeList const &edge_list) {
 
   edges = edge_list;
   for (auto e : edges) {
-    length += e->orig_length;
+    length += e->length;
   }
+}
+
+Path::Path(EdgePtr const &e) {
+
+  edges.push_back(e);
+  length = e->length;
 }
 
 EdgePtr Path::operator[](int pos) { return edges[pos]; }
@@ -30,7 +36,7 @@ bool Path::operator==(const Path &rhs) {
   return true;
 }
 
-bool Path::operator==(const std::vector<int> &rhs) {
+bool Path::is_equal(const std::vector<int> &rhs) {
   if (edges.size() != (rhs.size() - 1)) {
     LOG(DEBUG) << "size mismatch. Got num edges=" << edges.size()
                << " and number of nodes=" << rhs.size();
@@ -54,20 +60,13 @@ void Path::print() {
   }
 }
 
-void Path::invert_edges() {
-  for (auto e : edges) {
-    e->length = -e->length;
-    e->source_node->del_out_edge(e);
-
-    auto orig_tgt = e->target_node;
-
-    (e->source_node).swap(e->target_node);
-    orig_tgt->add_out_edge(e);
-  }
-}
-
 void Path::set_occupied(const bool &val) {
   for (auto e : edges) {
     e->occupied = val;
   }
+}
+
+void Path::append_edge(const EdgePtr &e) {
+  edges.push_back(e);
+  length += e->length;
 }

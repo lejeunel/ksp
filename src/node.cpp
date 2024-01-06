@@ -36,3 +36,11 @@ Path Node::make_path_from_root() {
 void Node::del_out_edge(EdgePtr e) {
   auto num_erased = std::erase(out_edges, e);
 }
+
+void Node::del_out_edges(const NodePtr &target_node) {
+  for (auto e : out_edges) {
+    if (e->target_node->id == target_node->id) {
+      std::erase(out_edges, e);
+    }
+  }
+}

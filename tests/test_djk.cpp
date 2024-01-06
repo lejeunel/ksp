@@ -16,5 +16,5 @@ TEST_CASE("Dijkstra should retrieve correct path from source to sink", "djk") {
   auto result = djk.run();
   auto path = result.value()[sink_node]->make_path_from_root();
 
-  REQUIRE(path == std::vector<int>{0, 2, 4, 3, 5});
+  REQUIRE(path.is_equal(std::vector<int>{0, 2, 4, 3, 5}));
 }

@@ -15,6 +15,7 @@ public:
   void print();
 
   NodeList nodes;
+  EdgeList edges;
 };
 
 #endif // GRAPH_H_
