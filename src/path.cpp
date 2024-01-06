@@ -9,8 +9,11 @@ Path::Path(EdgeList const &edge_list) {
 
   edges = edge_list;
   for (auto e : edges) {
+    LOG(DEBUG) << "e: " << e;
+    LOG(DEBUG) << "length: " << e->length;
     length += e->length;
   }
+  LOG(DEBUG) << "edges.size(): " << edges.size();
 }
 
 Path::Path(EdgePtr const &e) {

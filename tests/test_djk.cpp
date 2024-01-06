@@ -13,8 +13,8 @@ TEST_CASE("Dijkstra should retrieve correct path from source to sink", "djk") {
   auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
   auto djk = Dijkstra(graph, source_node);
-  auto result = djk.run();
-  auto path = result.value()[sink_node]->make_path_from_root();
+  auto nodes = djk.run().value();
+  auto path = nodes[sink_node]->make_path_from_root().value();
 
   REQUIRE(path.is_equal(std::vector<int>{0, 2, 4, 3, 5}));
 }

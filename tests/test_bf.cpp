@@ -14,8 +14,8 @@ TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
   auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
   auto bf = BellmanFord(graph, source_node);
-  auto result = bf.run();
-  auto path = result.value()[sink_node]->make_path_from_root();
+  auto nodes = bf.run().value();
+  auto path = nodes[sink_node]->make_path_from_root().value();
 
   REQUIRE(path.is_equal(std::vector<int>{0, 3, 1, 2}));
 }

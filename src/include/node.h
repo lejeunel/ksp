@@ -2,6 +2,7 @@
 #define NODE_H_
 #include "common.h"
 #include "path.h"
+#include <expected>
 
 class Node {
 public:
@@ -12,7 +13,7 @@ public:
   void add_out_edge(EdgePtr const &);
   void del_out_edge(EdgePtr);
   void del_out_edges(const NodePtr &target_node);
-  Path make_path_from_root();
+  std::expected<Path, std::string> make_path_from_root();
 
   int id;
   EdgeList out_edges;

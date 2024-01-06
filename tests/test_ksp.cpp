@@ -29,4 +29,9 @@ TEST_CASE("KSP should retrieve correct set of paths from source to sink",
     REQUIRE(paths[0]->get_length() == 5);
     REQUIRE(paths[1]->get_length() == 6);
   }
+  SECTION("k=3") {
+    auto result = ksp.run(3);
+
+    REQUIRE(result.has_value() == false);
+  }
 }

@@ -40,12 +40,18 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
   }
 
   if (k == 1) {
-    auto first_path = std::make_shared<Path>(sink_node->make_path_from_root());
-    paths.push_back(first_path);
+    auto res = sink_node->make_path_from_root();
+    if (!res.has_value()) {
+      return std::unexpected{res.error()};
+    }
+
+    auto first_path = std::make_shared<Path>();
+    paths.push_back(std::make_shared<Path>(res.value()));
     return paths;
   }
 
   while (true) {
+    LOG(DEBUG) << "iter. " << iter << "/" << k;
     // Use the current distance from the source to make all edge
     // lengths positive
     update_lengths();
@@ -55,14 +61,18 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
     // run single-source non-negative weights shortest-path
     djk->run();
 
-    auto path = sink_node->make_path_from_root();
+    auto res = sink_node->make_path_from_root();
+    if (!res.has_value()) {
+      return std::unexpected{res.error()};
+    }
+
+    auto path = res.value();
 
     // Invert all the edges along the best path
     set_interlaced_on_path(path);
     invert_edges_on_path(path);
     path.set_occupied(true);
 
-    LOG(DEBUG) << "k: " << iter << " cost: " << path.get_length();
     ++iter;
 
     if (iter > k) {
