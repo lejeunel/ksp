@@ -1,8 +1,4 @@
 #include "include/path.h"
-#include "include/directed_graph.h"
-#include "include/easylogging++.h"
-#include <iostream>
-#include <memory>
 
 Path::Path() {}
 Path::Path(EdgeList const &edge_list) {

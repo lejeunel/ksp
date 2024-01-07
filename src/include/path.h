@@ -2,7 +2,11 @@
 #define PATH_H_
 
 #include "common.h"
+#include "directed_graph.h"
+#include "easylogging++.h"
 #include <algorithm>
+#include <iostream>
+#include <memory>
 
 class Path {
 public:

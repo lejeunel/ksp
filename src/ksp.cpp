@@ -1,12 +1,4 @@
 #include "include/ksp.h"
-#include "include/bellman_ford.h"
-#include "include/common.h"
-#include "include/dijkstra.h"
-#include "include/easylogging++.h"
-#include "include/path.h"
-#include <exception>
-
-INITIALIZE_EASYLOGGINGPP
 
 KSP::KSP(std::shared_ptr<DirectedGraph> a_graph, const int &a_source,
          const int &a_sink) {
@@ -64,7 +56,8 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
 
     auto res = sink_node->make_path_from_root();
     if (!res.has_value()) {
-      return std::unexpected{res.error()};
+      LOG(WARNING) << res.error();
+      break;
     }
 
     auto path = res.value();
@@ -85,7 +78,6 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
   // have been inverted in the process)
   reset_all_inverted_edges();
 
-  // graph->print();
   retrieve_all_paths();
 
   reset_all_occupied_edges();

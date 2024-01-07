@@ -1,8 +1,12 @@
 #ifndef NODE_H_
 #define NODE_H_
 #include "common.h"
+#include "edge.h"
 #include "path.h"
+#include <algorithm>
 #include <expected>
+#include <memory>
+#include <vector>
 
 class Node {
 public:

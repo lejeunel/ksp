@@ -6,6 +6,7 @@
 #include "dijkstra.h"
 #include "directed_graph.h"
 #include "path.h"
+#include <exception>
 #include <expected>
 #include <string>
 

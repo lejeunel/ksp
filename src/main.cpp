@@ -2,8 +2,11 @@
 #include "include/argparse.hpp"
 #include "include/dot_parser.h"
 #include "include/ksp.h"
+#include "include/logger.h"
 #include <iostream>
 #include <string>
+
+INITIALIZE_EASYLOGGINGPP
 
 DotFileParser make_parser(std::string const &digraph_rex,
                           std::string const &edge_rex) {
@@ -23,6 +26,14 @@ int main(int argc, char *argv[]) {
   program.add_argument("sink-id").help("node id of sink").scan<'i', int>();
   program.add_argument("k").help("number of paths").scan<'i', int>();
 
+  int verbosity = 0;
+  program.add_argument("-v", "--verbose")
+      .action([&](const auto &) { ++verbosity; })
+      .append()
+      .default_value(false)
+      .implicit_value(true)
+      .nargs(0);
+
   try {
     program.parse_args(argc, argv);
   } catch (const std::exception &err) {
@@ -30,6 +41,13 @@ int main(int argc, char *argv[]) {
     std::cerr << program;
     return 1;
   }
+
+  if (verbosity == 1)
+    configure_logger(el::Level::Error);
+  else if (verbosity == 2)
+    configure_logger(el::Level::Debug);
+  else
+    configure_logger(el::Level::Unknown);
 
   auto path = program.get<std::string>("dot-file");
   auto source_id = program.get<int>("source-id");

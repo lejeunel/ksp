@@ -1,7 +1,4 @@
 #include "include/bellman_ford.h"
-#include "include/common.h"
-#include "include/easylogging++.h"
-#include "include/utils.h"
 
 std::expected<std::vector<int>, std::string> BellmanFord::sort_nodes() {
   std::vector<int> nodes_idx;

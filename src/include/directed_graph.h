@@ -1,11 +1,11 @@
+#ifndef GRAPH_H_
+#define GRAPH_H_
+
 #include "dot_parser.h"
 #include "easylogging++.h"
 #include "edge.h"
 #include "node.h"
 #include "path.h"
-
-#ifndef GRAPH_H_
-#define GRAPH_H_
 
 class DirectedGraph {
 public:

@@ -8,16 +8,12 @@ add_library(src
     edge.cpp
     utils.cpp
     min_priority_queue.cpp
-)
+    logger.cpp
+    easylogging++.cpp)
 
 add_executable(edksp
-  main.cpp
-easylogging++.cpp)
+  main.cpp)
 
-target_compile_definitions(edksp PUBLIC
-  ELPP_DISABLE_LOGS
-  ELPP_NO_LOG_TO_FILE
-  ELPP_NO_DEFAULT_LOG_FILE)
 
 target_link_libraries(edksp src)
 set_target_properties(edksp PROPERTIES RUNTIME_OUTPUT_DIRECTORY

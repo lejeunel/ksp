@@ -1,12 +1,12 @@
 digraph {
   // labelled, weighted edges
   0 -> 1[weight="1"];
-  0 -> 6[weight="15"];
+  0 -> 6[weight="7"];
   1 -> 2[weight="1"];
   2 -> 5[weight="1"];
   0 -> 3[weight="4"];
   3 -> 2[weight="1"];
-  6 -> 5[weight="8"];
+  6 -> 5[weight="1"];
   1 -> 4[weight="3"];
   4 -> 5[weight="1"];
 }

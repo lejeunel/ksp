@@ -1,9 +1,4 @@
 #include "include/node.h"
-#include "include/easylogging++.h"
-#include "include/edge.h"
-#include <algorithm>
-#include <memory>
-#include <vector>
 
 int Node::get_id() { return id; }
 
