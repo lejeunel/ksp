@@ -14,7 +14,7 @@ public:
   bool occupied = false;
   bool interlaced = false;
   scalar_t length, orig_length;
-  NodePtr source_node, target_node;
+  std::weak_ptr<Node> source_node, target_node;
 };
 
 #endif // EDGE_H_

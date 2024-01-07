@@ -6,7 +6,7 @@ void Node::add_out_edge(EdgePtr const &e) { out_edges.push_back(e); }
 
 EdgePtr Node::get_out_edge(const int &adj_id) {
   for (auto e : out_edges) {
-    if (e->target_node->id == adj_id) {
+    if (e->target_node.lock()->id == adj_id) {
       return e;
     }
   }
@@ -38,7 +38,7 @@ void Node::del_out_edge(EdgePtr e) {
 
 void Node::del_out_edges(const NodePtr &target_node) {
   for (auto e : out_edges) {
-    if (e->target_node->id == target_node->id) {
+    if (e->target_node.lock()->id == target_node->id) {
       std::erase(out_edges, e);
     }
   }

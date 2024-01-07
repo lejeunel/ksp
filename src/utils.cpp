@@ -16,14 +16,14 @@ std::vector<int> Utils::make_indices(const int &size) {
 std::expected<std::vector<int>, std::string>
 Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
 
-  auto n_nodes = graph->n_nodes();
+  auto n_nodes = graph->nodes.size();
 
   // compute in-degree of each node
   std::vector<int> indegree(n_nodes, 0);
   int tgt_id;
   for (int n = 0; n < n_nodes; n++) {
     for (auto e : (*graph)[n]->out_edges) {
-      tgt_id = e->target_node->get_id();
+      tgt_id = e->target_node.lock()->get_id();
       indegree[tgt_id]++;
     }
   }
@@ -48,7 +48,7 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
     qrr.pop();
     ans.push_back(node);
     for (auto e : (*graph)[node]->out_edges) {
-      tgt_id = e->target_node->get_id();
+      tgt_id = e->target_node.lock()->id;
       indegree[tgt_id]--;
       if (indegree[tgt_id] == 0) {
         qrr.push(tgt_id);

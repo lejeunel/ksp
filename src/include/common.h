@@ -7,8 +7,10 @@
 class Node;
 class Edge;
 class Path;
+class DirectedGraph;
 
 typedef std::shared_ptr<Edge> EdgePtr;
+typedef std::shared_ptr<DirectedGraph> GraphPtr;
 typedef std::vector<EdgePtr> EdgeList;
 typedef std::shared_ptr<Node> NodePtr;
 typedef std::shared_ptr<Path> PathPtr;

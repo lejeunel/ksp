@@ -12,10 +12,8 @@ public:
   DirectedGraph(int n_nodes, int n_edges, int *node_from, int *node_to,
                 scalar_t *weights);
   DirectedGraph(DiGraphEdges const &);
-  int n_nodes() { return nodes.size(); };
-  NodeList get_nodes() { return nodes; };
   NodePtr operator[](const int &);
-  void print();
+  friend std::ostream &operator<<(std::ostream &, const DirectedGraph &);
 
   NodeList nodes;
   EdgeList edges;

@@ -41,7 +41,7 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
 
     auto first_path = std::make_shared<Path>();
     paths.push_back(std::make_shared<Path>(res.value()));
-    LOG(DEBUG) << paths[0]->to_str();
+    LOG(DEBUG) << *paths[0];
     return paths;
   }
 
@@ -52,6 +52,9 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
     update_lengths();
     // Fix numerical errors
     clip_lengths();
+
+    LOG(TRACE) << "transformed graph:";
+    LOG(TRACE) << *graph;
 
     // run single-source non-negative weights shortest-path
     djk->run();
@@ -98,8 +101,8 @@ bool KSP::validate_source(std::shared_ptr<DirectedGraph> graph,
 void KSP::update_lengths() {
   for (auto n : graph->nodes) {
     for (auto e : n->out_edges) {
-      e->length +=
-          e->source_node->dist_from_root - e->target_node->dist_from_root;
+      e->length += e->source_node.lock()->dist_from_root -
+                   e->target_node.lock()->dist_from_root;
     }
   }
 }
@@ -116,12 +119,12 @@ void KSP::clip_lengths() {
 void KSP::invert_edge(EdgePtr const &e) {
 
   e->length = -e->length;
-  e->source_node->del_out_edge(e);
+  e->source_node.lock()->del_out_edge(e);
 
   auto orig_tgt = e->target_node;
 
   (e->source_node).swap(e->target_node);
-  orig_tgt->add_out_edge(e);
+  orig_tgt.lock()->add_out_edge(e);
 }
 
 void KSP::invert_edges_on_path(Path &p) {
@@ -171,7 +174,7 @@ void KSP::retrieve_all_paths() {
 
   for (auto p : paths) {
     auto e = (*p)[0];
-    while (e->target_node != graph->nodes[sink]) {
+    while (e->target_node.lock() != graph->nodes[sink]) {
       for (auto next_e : e->get_edges_at_head()) {
         if ((next_e->occupied) && (!next_e->interlaced) && (!next_e->used)) {
           next_e->used = true;

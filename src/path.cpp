@@ -16,52 +16,52 @@ Path::Path(EdgePtr const &e) {
 }
 
 EdgePtr Path::operator[](int pos) { return edges[pos]; }
+
 bool Path::operator==(const Path &rhs) {
   if (edges.size() != rhs.edges.size()) {
     return false;
   }
 
   for (int i = 0; i < edges.size(); ++i) {
-    if ((edges[i]->source_node->id != rhs.edges[i]->source_node->id)) {
+    if ((edges[i]->source_node.lock()->id !=
+         rhs.edges[i]->source_node.lock()->id)) {
       return false;
     }
-    if ((edges[i]->target_node->id != rhs.edges[i]->target_node->id)) {
+    if ((edges[i]->target_node.lock()->id !=
+         rhs.edges[i]->target_node.lock()->id)) {
       return false;
     }
   }
   return true;
 }
 
-bool Path::is_equal(const std::vector<int> &rhs) {
+bool Path::operator==(const std::vector<int> &rhs) {
   if (edges.size() != (rhs.size() - 1)) {
     LOG(TRACE) << "size mismatch. Got num edges=" << edges.size()
                << " and number of nodes=" << rhs.size();
     return false;
   }
   for (int i = 0; i < rhs.size() - 1; ++i) {
-    if ((edges[i]->source_node->id != rhs[i])) {
+    if ((edges[i]->source_node.lock()->id != rhs[i])) {
       return false;
     }
-    if ((edges[i]->target_node->id != rhs[i + 1])) {
+    if ((edges[i]->target_node.lock()->id != rhs[i + 1])) {
       return false;
     }
   }
   return true;
 }
-std::string Path::to_str() {
 
-  std::stringstream buffer;
-  buffer << edges[0]->source_node->id;
-  for (auto e : edges) {
-    buffer << " -> " << e->target_node->id;
+std::ostream &operator<<(std::ostream &os, const Path &path) {
+  os << path.edges[0]->source_node.lock()->id;
+  for (auto e : path.edges) {
+    os << " -> " << e->target_node.lock()->id;
   }
 
-  buffer << " (length= " << length << ")";
+  os << " (length= " << path.length << ")";
 
-  return buffer.str();
+  return os;
 }
-
-void Path::print() { LOG(DEBUG) << this->to_str(); }
 
 void Path::set_occupied(const bool &val) {
   for (auto e : edges) {

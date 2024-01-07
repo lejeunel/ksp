@@ -18,13 +18,16 @@ int main(int argc, char *argv[]) {
   if (returnCode != 0)
     return returnCode;
 
-  if ((verbosity == Catch::Verbosity::Normal) |
-      (verbosity == Catch::Verbosity::Quiet)) {
-    std::cout << "log warning and errors" << std::endl;
-    configure_logger(el::Level::Info);
-  } else {
-    std::cout << "log everything" << std::endl;
+  if (verbosity == Catch::Verbosity::Quiet) {
+    std::cout << "quiet" << std::endl;
+    configure_logger(el::Level::Error);
+  } else if (verbosity == Catch::Verbosity::Normal) {
+    std::cout << "normal" << std::endl;
+    configure_logger(el::Level::Debug);
+  } else if (verbosity == Catch::Verbosity::High) {
+    std::cout << "high" << std::endl;
     configure_logger(el::Level::Trace);
   }
+
   return session.run();
 }

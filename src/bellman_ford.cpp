@@ -32,13 +32,13 @@ std::expected<NodeList, std::string> BellmanFord::run() {
     for (auto e : node->out_edges) {
 
       auto d = node->dist_from_root + e->length;
-      auto src = e->source_node;
-      auto tgt = e->target_node;
+      auto src = e->source_node.lock();
+      auto tgt = e->target_node.lock();
       if (d < tgt->dist_from_root) {
         tgt->dist_from_root = d;
         tgt->predecessor = src;
       }
     }
   }
-  return graph->get_nodes();
+  return graph->nodes;
 }

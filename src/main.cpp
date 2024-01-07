@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
   auto paths = result.value();
   LOG(INFO) << "Found " << paths.size() << " paths:";
   for (auto p : paths) {
-    LOG(INFO) << p->to_str();
+    LOG(INFO) << *p;
   }
 
   return 0;

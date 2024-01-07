@@ -18,8 +18,9 @@ TEST_CASE("KSP should retrieve correct set of paths from source to sink",
 
   SECTION("k=1") {
     auto path = ksp.run(1).value()[0];
+    auto expected = std::vector<int>{0, 1, 2, 5};
 
-    REQUIRE(path->is_equal(std::vector<int>{0, 1, 2, 5}));
+    REQUIRE(*path == expected);
     REQUIRE(path->get_length() == 3);
   }
 
@@ -31,6 +32,7 @@ TEST_CASE("KSP should retrieve correct set of paths from source to sink",
   }
   SECTION("k=3") {
     auto paths = ksp.run(3).value();
-    REQUIRE(paths[2]->is_equal(std::vector<int>{0, 6, 5}));
+    auto expected = (std::vector<int>{0, 6, 5});
+    REQUIRE(*paths[2] == expected);
   }
 }

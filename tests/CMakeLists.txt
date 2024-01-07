@@ -1,11 +1,11 @@
-Include(FetchContent)
-FetchContent_Declare(
+include(FetchContent)
+fetchcontent_declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
   GIT_TAG        v3.4.0
 )
 
-FetchContent_MakeAvailable(Catch2)
+fetchcontent_makeavailable(Catch2)
 
 # test suite
 add_executable(tests
@@ -15,8 +15,8 @@ add_executable(tests
   test_bf.cpp
   test_djk.cpp
   test_ksp.cpp
-    ../src/easylogging++.cpp
-    ../src/logger.cpp
+../src/easylogging++.cpp
+../src/logger.cpp
 )
 
 target_link_libraries(tests PUBLIC Catch2::Catch2 src)

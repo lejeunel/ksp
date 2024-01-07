@@ -14,8 +14,9 @@ DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,
                                         nodes[_node_to[i]], _weights[i]);
     nodes[_node_from[i]]->add_out_edge(e_out);
     edges.push_back(e_out);
-    LOG(TRACE) << "[GRAPH] added edge " << e_out->source_node->id << " -> "
-               << e_out->target_node->id << " length: " << e_out->length;
+    LOG(TRACE) << "[GRAPH] added edge " << e_out->source_node.lock()->id
+               << " -> " << e_out->target_node.lock()->id
+               << " length: " << e_out->length;
   }
 }
 
@@ -36,21 +37,23 @@ DirectedGraph::DirectedGraph(DiGraphEdges const &edges_to_add) {
         std::make_shared<Edge>(nodes[e.in_node], nodes[e.out_node], e.weight);
     nodes[e.in_node]->add_out_edge(e_out);
     edges.push_back(e_out);
-    LOG(TRACE) << "[GRAPH] added edge " << e_out->source_node->id << " -> "
-               << e_out->target_node->id << " length: " << e_out->length;
+    LOG(TRACE) << "[GRAPH] added edge " << e_out->source_node.lock()->id
+               << " -> " << e_out->target_node.lock()->id
+               << " length: " << e_out->length;
   }
 }
 
 NodePtr DirectedGraph::operator[](const int &id) { return nodes[id]; }
 
-void DirectedGraph::print() {
-  for (auto e : edges) {
+std::ostream &operator<<(std::ostream &os, const DirectedGraph &graph) {
+  for (auto e : graph.edges) {
     auto out = e->target_node;
     auto l = e->length;
     auto o = e->occupied;
     auto i = e->interlaced;
-    LOG(TRACE) << e->source_node->id << "->" << e->target_node->id
-               << " / len: " << l << " / occ: " << o << " / itl: " << i
-               << " / dst: " << e->target_node->dist_from_root;
+    os << e->source_node.lock()->id << "->" << e->target_node.lock()->id
+       << " / len: " << l << " / occ: " << o << " / itl: " << i
+       << " / dst: " << e->target_node.lock()->dist_from_root << std::endl;
   }
+  return os;
 }

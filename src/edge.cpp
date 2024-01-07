@@ -17,4 +17,4 @@ Edge::Edge(EdgePtr const &e) {
   interlaced = e->interlaced;
 }
 
-EdgeList Edge::get_edges_at_head() { return target_node->out_edges; }
+EdgeList Edge::get_edges_at_head() { return target_node.lock()->out_edges; }
