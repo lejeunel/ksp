@@ -85,6 +85,7 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
   // have been inverted in the process)
   reset_all_inverted_edges();
 
+  // graph->print();
   retrieve_all_paths();
 
   reset_all_occupied_edges();
@@ -178,7 +179,7 @@ void KSP::retrieve_all_paths() {
     auto e = (*p)[0];
     while (e->target_node != graph->nodes[sink]) {
       for (auto next_e : e->get_edges_at_head()) {
-        if ((next_e->occupied) && (!next_e->interlaced)) {
+        if ((next_e->occupied) && (!next_e->interlaced) && (!next_e->used)) {
           next_e->used = true;
           p->append_edge(next_e);
           e = next_e;
@@ -186,6 +187,7 @@ void KSP::retrieve_all_paths() {
         }
       }
     }
+    // p->print();
   }
 
   std::sort(paths.begin(), paths.end(), compare_paths_lengths());

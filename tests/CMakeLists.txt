@@ -17,10 +17,10 @@ add_executable(test
     ../src/easylogging++.cpp
 )
 
-target_compile_definitions(test PUBLIC
-  ELPP_DISABLE_LOGS
-  ELPP_NO_LOG_TO_FILE
-  ELPP_NO_DEFAULT_LOG_FILE)
+# target_compile_definitions(test PUBLIC
+#   ELPP_DISABLE_LOGS
+#   ELPP_NO_LOG_TO_FILE
+#   ELPP_NO_DEFAULT_LOG_FILE)
 target_link_libraries(test PUBLIC Catch2::Catch2WithMain src)
 set_target_properties(test PROPERTIES RUNTIME_OUTPUT_DIRECTORY
   "${CMAKE_BINARY_DIR}/build")
