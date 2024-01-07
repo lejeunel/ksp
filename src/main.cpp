@@ -19,7 +19,7 @@ DotFileParser make_parser(std::string const &digraph_rex,
 }
 
 int main(int argc, char *argv[]) {
-  argparse::ArgumentParser program("edksp");
+  argparse::ArgumentParser program("edksp", "0.1");
 
   program.add_argument("dot-file").help("path to dot file");
   program.add_argument("source-id").help("node id of source").scan<'i', int>();
@@ -27,11 +27,12 @@ int main(int argc, char *argv[]) {
   program.add_argument("k").help("number of paths").scan<'i', int>();
 
   int verbosity = 0;
-  program.add_argument("-v", "--verbose")
+  program.add_argument("-V")
       .action([&](const auto &) { ++verbosity; })
       .append()
       .default_value(false)
       .implicit_value(true)
+      .help("verbosity level")
       .nargs(0);
 
   try {
@@ -42,26 +43,25 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
+  configure_logger(el::Level::Error);
   if (verbosity == 1)
-    configure_logger(el::Level::Error);
-  else if (verbosity == 2)
     configure_logger(el::Level::Debug);
-  else
-    configure_logger(el::Level::Unknown);
+  else if (verbosity > 1)
+    configure_logger(el::Level::Trace);
 
   auto path = program.get<std::string>("dot-file");
   auto source_id = program.get<int>("source-id");
   auto sink_id = program.get<int>("sink-id");
   auto k = program.get<int>("k");
 
-  std::cout << "Parsing file: " << path << std::endl;
+  LOG(DEBUG) << "Parsing file: " << path;
 
   auto parser = make_parser(R"(digraph.*\{(.*)}.*)",
                             R"(([0-9]*) -> ([0-9]*)\[weight=\"(.*)\"])");
   auto parser_result = parser.parse(path);
 
   if (!parser_result.has_value()) {
-    std::cout << parser_result.error() << std::endl;
+    LOG(ERROR) << parser_result.error();
     return 1;
   }
 
@@ -70,13 +70,14 @@ int main(int argc, char *argv[]) {
   auto result = ksp.run(k);
 
   if (!result.has_value()) {
-    std::cout << result.error() << std::endl;
+    LOG(ERROR) << result.error();
     return 1;
   }
 
   auto paths = result.value();
+  LOG(INFO) << "Found " << paths.size() << " paths:";
   for (auto p : paths) {
-    std::cout << p->to_str() << std::endl;
+    LOG(INFO) << p->to_str();
   }
 
   return 0;

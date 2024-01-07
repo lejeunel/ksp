@@ -8,6 +8,8 @@ KSP::KSP(std::shared_ptr<DirectedGraph> a_graph, const int &a_source,
   sink = a_sink;
   bfd = std::make_unique<BellmanFord>(a_graph, source);
   djk = std::make_unique<Dijkstra>(a_graph, source);
+  LOG(DEBUG) << "[KSP] Initialized KSP with source: " << source
+             << " and sink: " << sink;
 }
 
 std::expected<PathList, std::string> KSP::run(const int &k) {
@@ -19,7 +21,7 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
   }
 
   if (validate_source(graph, source) == false) {
-    return std::unexpected{"source and/or sink are not valid nodes."};
+    return std::unexpected{"[KSP] source is not valid nodes."};
   }
 
   auto sink_node = (*graph)[sink];
@@ -44,7 +46,7 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
   }
 
   while (true) {
-    LOG(INFO) << "iter. " << iter << "/" << k;
+    LOG(DEBUG) << "[KSP] iter. " << iter << "/" << k;
     // Use the current distance from the source to make all edge
     // lengths positive
     update_lengths();
@@ -87,7 +89,7 @@ std::expected<PathList, std::string> KSP::run(const int &k) {
 bool KSP::validate_source(std::shared_ptr<DirectedGraph> graph,
                           const int &source) {
   if ((*graph)[source]->out_edges.size() > 0) {
-    LOG(DEBUG) << "source node is valid";
+    LOG(DEBUG) << "[KSP] Found leaving edges from source node";
     return true;
   }
   return false;

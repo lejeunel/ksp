@@ -20,7 +20,8 @@ std::expected<Path, std::string> Node::make_path_from_root() {
   while (pred != nullptr) {
     auto edge = pred->get_out_edge(curr_id);
     if (edge == nullptr) {
-      return std::unexpected{"Could not reach root node."};
+      return std::unexpected{"Could not reach root node from node: " +
+                             std::to_string(id)};
     }
     edge_list.push_back(edge);
     curr_id = pred->id;

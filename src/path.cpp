@@ -34,7 +34,7 @@ bool Path::operator==(const Path &rhs) {
 
 bool Path::is_equal(const std::vector<int> &rhs) {
   if (edges.size() != (rhs.size() - 1)) {
-    LOG(DEBUG) << "size mismatch. Got num edges=" << edges.size()
+    LOG(TRACE) << "size mismatch. Got num edges=" << edges.size()
                << " and number of nodes=" << rhs.size();
     return false;
   }
@@ -51,12 +51,12 @@ bool Path::is_equal(const std::vector<int> &rhs) {
 std::string Path::to_str() {
 
   std::stringstream buffer;
+  buffer << edges[0]->source_node->id;
   for (auto e : edges) {
-    buffer << "(" << e->source_node->id << " -> " << e->target_node->id
-           << "), ";
+    buffer << " -> " << e->target_node->id;
   }
 
-  buffer << " length: " << length;
+  buffer << " (length= " << length << ")";
 
   return buffer.str();
 }

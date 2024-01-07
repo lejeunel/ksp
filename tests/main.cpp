@@ -21,10 +21,10 @@ int main(int argc, char *argv[]) {
   if ((verbosity == Catch::Verbosity::Normal) |
       (verbosity == Catch::Verbosity::Quiet)) {
     std::cout << "log warning and errors" << std::endl;
-    configure_logger(el::Level::Error);
+    configure_logger(el::Level::Info);
   } else {
     std::cout << "log everything" << std::endl;
-    configure_logger(el::Level::Debug);
+    configure_logger(el::Level::Trace);
   }
   return session.run();
 }

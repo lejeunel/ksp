@@ -19,14 +19,14 @@ std::expected<NodeList, std::string> BellmanFord::run() {
   }
   graph->nodes[source]->dist_from_root = 0.;
 
-  LOG(INFO) << "[Bellman-Ford] Computing topological sort...";
+  LOG(DEBUG) << "[Bellman-Ford] Computing topological sort...";
   auto result = sort_nodes();
   if (!result.has_value()) {
     return std::unexpected{result.error()};
   }
   auto nodes_order = result.value();
 
-  LOG(INFO) << "[Bellman-Ford] Computing distances...";
+  LOG(DEBUG) << "[Bellman-Ford] Computing distances...";
   for (int i = 0; i < nodes_order.size(); i++) {
     auto node = (*graph)[nodes_order[i]];
     for (auto e : node->out_edges) {
