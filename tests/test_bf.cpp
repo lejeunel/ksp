@@ -1,7 +1,7 @@
 #include "../src/include/bellman_ford.h"
 #include "../src/include/directed_graph.h"
 #include "../src/include/path.h"
-#include "../src/include/sp_common.h"
+#include "../src/include/utils.h"
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
@@ -19,7 +19,8 @@ TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
   REQUIRE(res.has_value() == true);
 
   auto path =
-      make_single_source_shortest_path(*graph, source_node, sink_node).value();
+      Utils::make_single_source_shortest_path(*graph, source_node, sink_node)
+          .value();
   auto expected = Path(std::vector<int>{0, 3, 1, 2}, 3);
 
   REQUIRE(path == expected);

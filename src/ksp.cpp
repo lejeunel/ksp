@@ -1,5 +1,4 @@
 #include "include/ksp.h"
-#include "include/sp_common.h"
 
 KSP::KSP(std::unique_ptr<DirectedGraph> a_graph, const int &a_source,
          const int &a_sink) {
@@ -34,7 +33,7 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
   }
 
   if (k == 1) {
-    auto res = make_single_source_shortest_path(*graph, source, sink);
+    auto res = Utils::make_single_source_shortest_path(*graph, source, sink);
     if (!res) {
       return std::unexpected{res.error()};
     }
@@ -48,9 +47,9 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     LOG(DEBUG) << "[KSP] iter: " << iter << "/" << k;
     // Use the current distance from the source to make all edge
     // lengths positive
-    positivize_edges(*graph);
+    Utils::positivize_edges(*graph);
     // Fix numerical errors
-    clip_all_edges(*graph, 0.);
+    Utils::clip_all_edges(*graph, 0.);
 
     LOG(TRACE) << "transformed graph:";
     LOG(TRACE) << *graph;
@@ -62,7 +61,7 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
       return std::unexpected{res_djk.error()};
     }
 
-    auto res = make_single_source_shortest_path(*graph, source, sink);
+    auto res = Utils::make_single_source_shortest_path(*graph, source, sink);
     if (!res) {
       LOG(WARNING) << res.error();
       return std::unexpected{res.error()};
@@ -70,9 +69,9 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     auto path = res.value();
 
     // Invert all the edges along the best path
-    set_edges_interlaced_on_path(*graph, path);
-    set_edges_occupied_on_path(*graph, path, true);
-    invert_edges_on_path(*graph, path);
+    Utils::set_edges_interlaced_on_path(*graph, path);
+    Utils::set_edges_occupied_on_path(*graph, path, true);
+    Utils::invert_edges_on_path(*graph, path);
 
     LOG(DEBUG) << "[KSP] done iter: " << iter;
 
@@ -89,14 +88,14 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
 
   // Put back the graph in its original state (i.e. invert edges which
   // have been inverted in the process)
-  reset_all_edges(*graph);
+  Utils::reset_all_edges(*graph);
   LOG(TRACE) << "done resetting graph";
 
   retrieve_all_paths();
   for (auto p : paths)
     LOG(TRACE) << p;
 
-  set_all_edges_occupied(*graph, false);
+  Utils::set_all_edges_occupied(*graph, false);
   return paths;
 }
 

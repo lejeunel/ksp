@@ -1,11 +1,10 @@
 #include "include/bellman_ford.h"
-#include "include/sp_common.h"
 
 std::expected<int, std::string> bellman_ford(DirectedGraph &graph,
                                              const int &source) {
 
   LOG(DEBUG) << "[Bellman-Ford] Initializing distances to source...";
-  initialize_distances_from_source(graph, source);
+  Utils::initialize_distances_from_source(graph, source);
   LOG(TRACE) << graph;
 
   LOG(DEBUG) << "[Bellman-Ford] Computing topological sort...";

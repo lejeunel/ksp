@@ -1,11 +1,10 @@
 #include "include/dijkstra.h"
-#include "include/sp_common.h"
 
 std::expected<int, std::string> dijkstra(DirectedGraph &graph,
                                          const int &source) {
 
   LOG(DEBUG) << "[Dijkstra] Initializing distances to source...";
-  initialize_distances_from_source(graph, source);
+  Utils::initialize_distances_from_source(graph, source);
   LOG(TRACE) << graph;
 
   auto queue = MinPriorityQueue();

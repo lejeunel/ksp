@@ -4,7 +4,6 @@
 #include "common.h"
 #include "easylogging++.h"
 #include "node.h"
-#include "sp_common.h"
 #include "utils.h"
 #include <expected>
 

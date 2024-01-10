@@ -4,7 +4,6 @@
 #include "directed_graph.h"
 #include "easylogging++.h"
 #include "min_priority_queue.h"
-#include "sp_common.h"
 #include "utils.h"
 #include <expected>
 

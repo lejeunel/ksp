@@ -1,5 +1,6 @@
 #include "../src/include/dijkstra.h"
 #include "../src/include/directed_graph.h"
+#include "../src/include/utils.h"
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Dijkstra should retrieve correct path from source to sink", "djk") {
@@ -16,7 +17,7 @@ TEST_CASE("Dijkstra should retrieve correct path from source to sink", "djk") {
   REQUIRE(res.has_value() == true);
 
   auto res_path =
-      make_single_source_shortest_path(*graph, source_node, sink_node);
+      Utils::make_single_source_shortest_path(*graph, source_node, sink_node);
   REQUIRE(res_path.has_value() == true);
   auto path = res_path.value();
 

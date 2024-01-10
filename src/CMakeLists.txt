@@ -1,6 +1,5 @@
 add_library(src
     directed_graph.cpp
-    sp_common.cpp
     bellman_ford.cpp
     dijkstra.cpp
     path.cpp
