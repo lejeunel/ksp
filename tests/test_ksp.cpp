@@ -6,7 +6,7 @@ TEST_CASE("KSP should retrieve correct set of paths from source to sink",
           "[KSP]") {
   int nodes_in[10] = {0, 1, 2, 0, 3, 1, 4, 3, 0, 6};
   int nodes_out[10] = {1, 2, 5, 3, 2, 4, 5, 5, 6, 5};
-  scalar_t weights[10] = {1, 1, 1, 4, 1, 3, 1, 8, 15, 1};
+  scalar_t weights[10] = {1, -1, 1, 4, 1, 3, 1, 8, 15, 1};
   int n_nodes = 7;
   int n_edges = 10;
   int source_node = 0;
@@ -19,7 +19,7 @@ TEST_CASE("KSP should retrieve correct set of paths from source to sink",
   SECTION("k=1") {
     auto res = ksp.run(1);
     auto paths = ksp.get_paths();
-    auto expected = Path(std::vector<int>{0, 1, 2, 5}, 3);
+    auto expected = Path(std::vector<int>{0, 1, 2, 5}, 1);
 
     REQUIRE(paths[0] == expected);
   }
