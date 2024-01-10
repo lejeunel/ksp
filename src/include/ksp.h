@@ -14,7 +14,7 @@ class KSP {
 
 public:
   KSP(std::unique_ptr<DirectedGraph> graph, const int &source, const int &sink);
-  std::expected<int, std::string> run(const int &);
+  std::expected<std::vector<Path>, std::string> run(const int &);
   bool validate_source();
   void update_lengths();
   void retrieve_all_paths();

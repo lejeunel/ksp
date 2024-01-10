@@ -71,12 +71,11 @@ int main(int argc, char *argv[]) {
 
   if (!result) {
     LOG(ERROR) << result.error();
-    return 1;
+    return 0;
   }
 
-  auto paths = ksp.get_paths();
-  LOG(INFO) << "Found " << paths.size() << " paths:";
-  for (auto p : paths) {
+  LOG(INFO) << "Found " << result.value().size() << " paths:";
+  for (auto p : result.value()) {
     LOG(INFO) << p;
   }
 

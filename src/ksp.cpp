@@ -11,7 +11,7 @@ KSP::KSP(std::unique_ptr<DirectedGraph> a_graph, const int &a_source,
              << " and sink: " << sink;
 }
 
-std::expected<int, std::string> KSP::run(const int &k) {
+std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
   int iter = 1;
   scalar_t curr_cost;
 
@@ -41,7 +41,7 @@ std::expected<int, std::string> KSP::run(const int &k) {
 
     paths.push_back(res.value());
     LOG(TRACE) << paths[0];
-    return 0;
+    return paths;
   }
 
   while (true) {
@@ -65,7 +65,7 @@ std::expected<int, std::string> KSP::run(const int &k) {
     auto res = make_single_source_shortest_path(*graph, source, sink);
     if (!res) {
       LOG(WARNING) << res.error();
-      return 1;
+      return std::unexpected{res.error()};
     }
     auto path = res.value();
 
@@ -97,7 +97,7 @@ std::expected<int, std::string> KSP::run(const int &k) {
     LOG(TRACE) << p;
 
   set_all_edges_occupied(*graph, false);
-  return 0;
+  return paths;
 }
 
 bool KSP::validate_source() {
