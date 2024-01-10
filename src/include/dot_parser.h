@@ -18,7 +18,11 @@ public:
 
   std::expected<DiGraphEdges, std::string> parse(std::string const &path) {
     auto str = file_parser.parse(path);
-    auto body = dag_block_matcher.search(str);
+    if (!str) {
+      return std::unexpected{str.error()};
+    }
+
+    auto body = dag_block_matcher.search(str.value());
 
     if (!body) {
       return std::unexpected{body.error()};

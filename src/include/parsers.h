@@ -53,9 +53,15 @@ private:
 
 class FileParser {
 public:
-  std::string parse(std::string path) {
+  std::expected<std::string, std::string> parse(std::string path) {
 
     std::ifstream file(path);
+
+    if (!file.is_open()) {
+      // show message:
+      return std::unexpected{"Could not open file " + path};
+    }
+
     std::stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
