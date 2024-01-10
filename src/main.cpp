@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
   LOG(DEBUG) << "Parsing file: " << path;
 
   auto parser = make_parser(R"(digraph.*\{(.*)}.*)",
-                            R"(([0-9]*) -> ([0-9]*)\[weight=\"(.*)\"])");
+                            R"(([0-9]*) -> ([0-9]*)\[w=\"(.*)\"])");
   auto parser_result = parser.parse(path);
 
   if (!parser_result) {
