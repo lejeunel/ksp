@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
                             R"(([0-9]*) -> ([0-9]*)\[weight=\"(.*)\"])");
   auto parser_result = parser.parse(path);
 
-  if (!parser_result.has_value()) {
+  if (!parser_result) {
     LOG(ERROR) << parser_result.error();
     return 1;
   }
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
   auto ksp = KSP(std::move(graph), source_id, sink_id);
   auto result = ksp.run(k);
 
-  if (!result.has_value()) {
+  if (!result) {
     LOG(ERROR) << result.error();
     return 1;
   }

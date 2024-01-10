@@ -7,11 +7,9 @@
 
 class Edge {
 public:
-  Edge(int const &a_id, Node *a_source_node, Node *a_target_node,
-       scalar_t _length);
-  Edge(Edge *e);
-  Node *tail() { return source_node; }
-  Node *head() { return target_node; }
+  Edge(int const &a_id, Node *a_tail, Node *a_head, scalar_t _length);
+  Node *tail() { return _tail; }
+  Node *head() { return _head; }
   bool is_occupied() { return occupied; }
   void set_occupied(const bool &val) { occupied = val; }
   bool is_interlaced() { return interlaced; }
@@ -22,7 +20,7 @@ public:
   void reset_length() { length = orig_length; }
   int get_length() const { return length; }
   int get_id() const { return id; }
-  void invert() { std::swap(source_node, target_node); }
+  void invert() { std::swap(_tail, _head); }
   friend std::ostream &operator<<(std::ostream &, const Edge &);
 
 private:
@@ -31,7 +29,7 @@ private:
   bool occupied = false;
   bool interlaced = false;
   scalar_t length, orig_length;
-  Node *source_node, *target_node;
+  Node *_tail, *_head;
 };
 
 #endif // EDGE_H_

@@ -26,8 +26,8 @@ Utils::topological_sort(const DirectedGraph &graph) {
     indegree[tgt_id]++;
   }
 
-  // Initially insert elements who has
-  // indegree 0
+  // Initially insert elements with
+  // indegree = 0
   std::vector<int> ans;
   std::queue<int> qrr;
   for (int n = 0; n < n_nodes; n++) {
@@ -46,7 +46,7 @@ Utils::topological_sort(const DirectedGraph &graph) {
     qrr.pop();
     ans.push_back(node);
     auto out_edges = graph.const_out_edges(node);
-    if (out_edges.has_value()) {
+    if (out_edges) {
 
       for (auto &e : out_edges.value()) {
         tgt_id = e->head()->get_id();

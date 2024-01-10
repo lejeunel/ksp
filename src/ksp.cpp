@@ -29,13 +29,13 @@ std::expected<int, std::string> KSP::run(const int &k) {
   // Compute the distance of all the nodes from the source
   // using "generic" shortest paths algorithm
   auto result = bellman_ford(*graph, source);
-  if (!result.has_value()) {
+  if (!result) {
     return std::unexpected{result.error()};
   }
 
   if (k == 1) {
     auto res = make_single_source_shortest_path(*graph, source, sink);
-    if (!res.has_value()) {
+    if (!res) {
       return std::unexpected{res.error()};
     }
 
@@ -58,12 +58,12 @@ std::expected<int, std::string> KSP::run(const int &k) {
     // run single-source non-negative weights shortest-path
     auto res_djk = dijkstra(*graph, source);
 
-    if (!res_djk.has_value()) {
+    if (!res_djk) {
       return std::unexpected{res_djk.error()};
     }
 
     auto res = make_single_source_shortest_path(*graph, source, sink);
-    if (!res.has_value()) {
+    if (!res) {
       LOG(WARNING) << res.error();
       return 1;
     }
@@ -102,7 +102,7 @@ std::expected<int, std::string> KSP::run(const int &k) {
 
 bool KSP::validate_source() {
   auto out_edges = (*graph)[source]->get_out_edges();
-  if (!out_edges.has_value()) {
+  if (!out_edges) {
     return false;
   }
   return true;

@@ -16,7 +16,7 @@ public:
   int get_id() const { return id; }
 
   void set_dist_from_root(scalar_t const &dist) { dist_from_root = dist; }
-  const scalar_t get_dist_from_root() const { return dist_from_root; }
+  const auto get_dist_from_root() const { return dist_from_root; }
   std::expected<Node *, std::string> get_predecessor() const {
     if (predecessor == nullptr) {
       return std::unexpected{"Could not find predecessor node"};

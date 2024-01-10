@@ -18,11 +18,9 @@ public:
   DirectedGraph(DiGraphEdges const &);
   friend std::ostream &operator<<(std::ostream &, const DirectedGraph &);
   Node *operator[](const int &id) { return _nodes[id].get(); }
-  const std::vector<std::unique_ptr<Node>> &nodes() { return _nodes; }
-  const std::vector<std::unique_ptr<Edge>> &edges() { return _edges; }
-  const std::vector<std::unique_ptr<Edge>> &const_edges() const {
-    return _edges;
-  }
+  auto &nodes() { return _nodes; }
+  auto &edges() { return _edges; }
+  const auto &const_edges() const { return _edges; }
   const std::expected<std::vector<Edge *>, std::string>
   const_out_edges(const int &from) const {
     return _nodes[from]->get_out_edges();

@@ -20,7 +20,7 @@ public:
     auto str = file_parser.parse(path);
     auto body = dag_block_matcher.search(str);
 
-    if (!body.has_value()) {
+    if (!body) {
       return std::unexpected{body.error()};
     }
 

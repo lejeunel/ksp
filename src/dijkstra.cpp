@@ -25,7 +25,7 @@ std::expected<int, std::string> dijkstra(DirectedGraph &graph,
     }
 
     auto out_edges = n->get_out_edges();
-    if (!out_edges.has_value()) {
+    if (!out_edges) {
       continue;
     }
 

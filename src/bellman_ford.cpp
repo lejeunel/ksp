@@ -10,7 +10,7 @@ std::expected<int, std::string> bellman_ford(DirectedGraph &graph,
 
   LOG(DEBUG) << "[Bellman-Ford] Computing topological sort...";
   auto result_top_sort = Utils::topological_sort(graph);
-  if (!result_top_sort.has_value()) {
+  if (!result_top_sort) {
     return std::unexpected{result_top_sort.error()};
   }
   auto nodes_order = result_top_sort.value();
@@ -20,7 +20,7 @@ std::expected<int, std::string> bellman_ford(DirectedGraph &graph,
     auto node = graph[nodes_order[i]];
 
     auto out_edges = node->get_out_edges();
-    if (!out_edges.has_value()) {
+    if (!out_edges) {
       continue;
     }
 

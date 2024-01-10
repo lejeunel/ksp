@@ -11,7 +11,7 @@ make_single_source_shortest_path(DirectedGraph &graph, const int &start_node_id,
 
   while (true) {
 
-    if (!pred.has_value() && (curr_node->get_id() != start_node_id)) {
+    if (!pred && (curr_node->get_id() != start_node_id)) {
       return std::unexpected{"Could not reach node " +
                              std::to_string(end_node_id) + " from node " +
                              std::to_string(start_node_id)};
