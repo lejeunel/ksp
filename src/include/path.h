@@ -1,37 +1,36 @@
 #ifndef PATH_H_
 #define PATH_H_
 
-#include "common.h"
 #include "directed_graph.h"
 #include "easylogging++.h"
-#include <algorithm>
+#include "edge.h"
 #include <iostream>
-#include <memory>
 
 class Path {
 public:
   Path();
-  Path(EdgeList const &);
-  Path(EdgePtr const &);
+  Path(const std::vector<int> &a_nodes, const scalar_t &a_length)
+      : nodes(a_nodes), length(a_length) {}
 
-  EdgePtr operator[](int);
-  bool operator==(const Path &rhs);
+  bool operator==(const Path &rhs) const;
   bool operator==(const std::vector<int> &rhs);
+  int operator[](const int &place) const { return nodes[place]; }
   friend std::ostream &operator<<(std::ostream &, const Path &);
 
-  scalar_t get_length() { return length; }
-  void set_occupied(const bool &);
-  EdgeList get_edges() { return edges; }
-  void append_edge(const EdgePtr &);
+  scalar_t get_length() const { return length; }
+  void append_edge(const int &from, const int &to, const scalar_t &a_length);
+  void reverse() { std::reverse(nodes.begin(), nodes.end()); }
+  int num_edges() const { return nodes.size() - 1; }
+  int num_nodes() const { return nodes.size(); }
 
 private:
-  EdgeList edges;
+  std::vector<int> nodes;
   scalar_t length = 0;
 };
 
 struct compare_paths_lengths {
-  inline bool operator()(const PathPtr &path1, const PathPtr &path2) {
-    return (path1->get_length() < path2->get_length());
+  inline bool operator()(const Path &path1, const Path &path2) {
+    return (path1.get_length() < path2.get_length());
   }
 };
 

@@ -6,16 +6,6 @@
 
 class Node;
 class Edge;
-class Path;
-class DirectedGraph;
-
-typedef std::shared_ptr<Edge> EdgePtr;
-typedef std::shared_ptr<DirectedGraph> GraphPtr;
-typedef std::vector<EdgePtr> EdgeList;
-typedef std::shared_ptr<Node> NodePtr;
-typedef std::shared_ptr<Path> PathPtr;
-typedef std::vector<PathPtr> PathList;
-typedef std::vector<NodePtr> NodeList;
 
 typedef float scalar_t;
 const scalar_t INF_LENGTH = std::numeric_limits<scalar_t>::max();

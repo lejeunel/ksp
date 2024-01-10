@@ -1,5 +1,7 @@
 #include "../src/include/bellman_ford.h"
 #include "../src/include/directed_graph.h"
+#include "../src/include/path.h"
+#include "../src/include/sp_common.h"
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
@@ -11,12 +13,14 @@ TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
   int n_edges = 4;
   int source_node = 0;
   int sink_node = 2;
-  auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
+  auto graph = std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
-  auto bf = BellmanFord(graph, source_node);
-  auto nodes = bf.run().value();
-  auto path = nodes[sink_node]->make_path_from_root().value();
-  auto expected = std::vector<int>{0, 3, 1, 2};
+  auto res = bellman_ford(*graph, source_node);
+  REQUIRE(res.has_value() == true);
+
+  auto path =
+      make_single_source_shortest_path(*graph, source_node, sink_node).value();
+  auto expected = Path(std::vector<int>{0, 3, 1, 2}, 3);
 
   REQUIRE(path == expected);
 }

@@ -1,5 +1,5 @@
-#include "../src/include/directed_graph.h"
 #include "include/argparse.hpp"
+#include "include/directed_graph.h"
 #include "include/dot_parser.h"
 #include "include/ksp.h"
 #include "include/logger.h"
@@ -65,8 +65,8 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  auto graph = std::make_shared<DirectedGraph>(parser_result.value());
-  auto ksp = KSP(graph, source_id, sink_id);
+  auto graph = std::make_unique<DirectedGraph>(parser_result.value());
+  auto ksp = KSP(std::move(graph), source_id, sink_id);
   auto result = ksp.run(k);
 
   if (!result.has_value()) {
@@ -74,10 +74,10 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  auto paths = result.value();
+  auto paths = ksp.get_paths();
   LOG(INFO) << "Found " << paths.size() << " paths:";
   for (auto p : paths) {
-    LOG(INFO) << *p;
+    LOG(INFO) << p;
   }
 
   return 0;

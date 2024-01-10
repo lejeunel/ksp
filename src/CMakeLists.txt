@@ -1,15 +1,17 @@
 add_library(src
     directed_graph.cpp
+    sp_common.cpp
     bellman_ford.cpp
     dijkstra.cpp
-    ksp.cpp
     path.cpp
     node.cpp
     edge.cpp
     utils.cpp
     min_priority_queue.cpp
     logger.cpp
-    easylogging++.cpp)
+    easylogging++.cpp
+    ksp.cpp
+)
 
 add_executable(edksp
   main.cpp)

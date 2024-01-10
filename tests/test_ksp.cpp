@@ -12,27 +12,33 @@ TEST_CASE("KSP should retrieve correct set of paths from source to sink",
   int source_node = 0;
   int sink_node = 5;
 
-  auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
+  auto graph = std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
-  auto ksp = KSP(graph, source_node, sink_node);
+  auto ksp = KSP(std::move(graph), source_node, sink_node);
 
   SECTION("k=1") {
-    auto path = ksp.run(1).value()[0];
-    auto expected = std::vector<int>{0, 1, 2, 5};
+    auto res = ksp.run(1);
+    auto paths = ksp.get_paths();
+    auto expected = Path(std::vector<int>{0, 1, 2, 5}, 3);
 
-    REQUIRE(*path == expected);
-    REQUIRE(path->get_length() == 3);
+    REQUIRE(paths[0] == expected);
   }
 
   SECTION("k=2") {
-    auto paths = ksp.run(2).value();
+    auto res = ksp.run(2);
+    auto paths = ksp.get_paths();
 
-    REQUIRE(paths[0]->get_length() == 5);
-    REQUIRE(paths[1]->get_length() == 6);
+    REQUIRE(paths[0].get_length() == 5);
+    REQUIRE(paths[1].get_length() == 6);
   }
   SECTION("k=3") {
-    auto paths = ksp.run(3).value();
-    auto expected = (std::vector<int>{0, 6, 5});
-    REQUIRE(*paths[2] == expected);
+    auto res = ksp.run(3);
+    auto paths = ksp.get_paths();
+    auto expected = Path(std::vector<int>{0, 6, 5}, 16);
+    REQUIRE(paths[2] == expected);
+  }
+  SECTION("k=4") {
+    auto res = ksp.run(4);
+    REQUIRE(res.has_value() == false);
   }
 }

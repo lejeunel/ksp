@@ -14,18 +14,16 @@ std::vector<int> Utils::make_indices(const int &size) {
 }
 
 std::expected<std::vector<int>, std::string>
-Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
+Utils::topological_sort(const DirectedGraph &graph) {
 
-  auto n_nodes = graph->nodes.size();
+  auto n_nodes = graph.num_of_nodes();
 
   // compute in-degree of each node
   std::vector<int> indegree(n_nodes, 0);
   int tgt_id;
-  for (int n = 0; n < n_nodes; n++) {
-    for (auto e : (*graph)[n]->out_edges) {
-      tgt_id = e->target_node.lock()->get_id();
-      indegree[tgt_id]++;
-    }
+  for (const auto &e : graph.const_edges()) {
+    tgt_id = e->head()->get_id();
+    indegree[tgt_id]++;
   }
 
   // Initially insert elements who has
@@ -41,17 +39,21 @@ Utils::topological_sort(std::shared_ptr<DirectedGraph> const &graph) {
 
   int count = 0;
   while (!qrr.empty()) {
-    // push those elements in queue which
-    // poses 0 indegree
+    // push those elements in queue with
+    // indegree = 0
     int node = qrr.front();
 
     qrr.pop();
     ans.push_back(node);
-    for (auto e : (*graph)[node]->out_edges) {
-      tgt_id = e->target_node.lock()->id;
-      indegree[tgt_id]--;
-      if (indegree[tgt_id] == 0) {
-        qrr.push(tgt_id);
+    auto out_edges = graph.const_out_edges(node);
+    if (out_edges.has_value()) {
+
+      for (auto &e : out_edges.value()) {
+        tgt_id = e->head()->get_id();
+        indegree[tgt_id]--;
+        if (indegree[tgt_id] == 0) {
+          qrr.push(tgt_id);
+        }
       }
     }
     count++;

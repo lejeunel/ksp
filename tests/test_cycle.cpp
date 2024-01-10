@@ -1,3 +1,4 @@
+#include "../src/include/bellman_ford.h"
 #include "../src/include/directed_graph.h"
 #include "../src/include/ksp.h"
 #include <catch2/catch_test_macros.hpp>
@@ -10,10 +11,9 @@ TEST_CASE("Graph with cycle should return error", "[cycle]") {
   int n_edges = 5;
   int source_node = 0;
   int sink_node = 2;
-  auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
+  auto graph = std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
-  auto bf = BellmanFord(graph, source_node);
-  auto result = bf.run();
+  auto res = bellman_ford(*graph, source_node);
 
-  REQUIRE(result.has_value() == false);
+  REQUIRE(res.has_value() == false);
 }

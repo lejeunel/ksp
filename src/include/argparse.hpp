@@ -657,7 +657,7 @@ public:
   }
 
   template <class F, class... Args>
-  auto action(F &&callable, Args &&... bound_args)
+  auto action(F &&callable, Args &&...bound_args)
       -> std::enable_if_t<std::is_invocable_v<F, Args..., std::string const>,
                           Argument &> {
     using action_type = std::conditional_t<
@@ -783,7 +783,7 @@ public:
   }
 
   template <typename T, typename... U>
-  Argument &choices(T &&first, U &&... rest) {
+  Argument &choices(T &&first, U &&...rest) {
     add_choice(std::forward<T>(first));
     choices(std::forward<U>(rest)...);
     return *this;
@@ -1552,7 +1552,7 @@ public:
   // Parameter packed add_parents method
   // Accepts a variadic number of ArgumentParser objects
   template <typename... Targs>
-  ArgumentParser &add_parents(const Targs &... f_args) {
+  ArgumentParser &add_parents(const Targs &...f_args) {
     for (const ArgumentParser &parent_parser : {std::ref(f_args)...}) {
       for (const auto &argument : parent_parser.m_positional_arguments) {
         auto it = m_positional_arguments.insert(

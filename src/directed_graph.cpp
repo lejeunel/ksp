@@ -1,59 +1,79 @@
 #include "include/directed_graph.h"
+#include "include/edge.h"
+#include "include/path.h"
 #include <set>
+#include <sstream>
 
-DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,
-                             int *_node_to, scalar_t *_weights) {
-
-  nodes.reserve(_n_nodes);
+void DirectedGraph::init(int _n_nodes, int _n_edges, int *_node_from,
+                         int *_node_to, scalar_t *_weights) {
+  _nodes.reserve(_n_nodes);
   for (int i = 0; i < _n_nodes; i++) {
-    nodes.push_back(std::make_shared<Node>(i));
+    _nodes.push_back(std::make_unique<Node>(i));
   }
 
   for (int i = 0; i < _n_edges; i++) {
-    auto e_out = std::make_shared<Edge>(nodes[_node_from[i]],
-                                        nodes[_node_to[i]], _weights[i]);
-    nodes[_node_from[i]]->add_out_edge(e_out);
-    edges.push_back(e_out);
-    LOG(TRACE) << "[GRAPH] added edge " << e_out->source_node.lock()->id
-               << " -> " << e_out->target_node.lock()->id
-               << " length: " << e_out->length;
+    _edges.push_back(std::make_unique<Edge>(i, _nodes[_node_from[i]].get(),
+                                            _nodes[_node_to[i]].get(),
+                                            _weights[i]));
+    _nodes[_node_from[i]]->add_out_edge(_edges.back().get());
+    auto e = _edges.back().get();
   }
+}
+
+DirectedGraph::DirectedGraph(int _n_nodes, int _n_edges, int *_node_from,
+                             int *_node_to, scalar_t *_weights) {
+  init(_n_nodes, _n_edges, _node_from, _node_to, _weights);
 }
 
 DirectedGraph::DirectedGraph(DiGraphEdges const &edges_to_add) {
 
   std::set<int> node_ids;
+  std::vector<int> nodes_from;
+  std::vector<int> nodes_to;
+  std::vector<scalar_t> weights;
   for (auto e : edges_to_add) {
     node_ids.insert(e.in_node);
     node_ids.insert(e.out_node);
+    nodes_from.push_back(e.in_node);
+    nodes_to.push_back(e.out_node);
+    weights.push_back(e.weight);
   }
 
-  for (auto n : node_ids) {
-    nodes.push_back(std::make_shared<Node>(n));
-  }
-
-  for (auto e : edges_to_add) {
-    auto e_out =
-        std::make_shared<Edge>(nodes[e.in_node], nodes[e.out_node], e.weight);
-    nodes[e.in_node]->add_out_edge(e_out);
-    edges.push_back(e_out);
-    LOG(TRACE) << "[GRAPH] added edge " << e_out->source_node.lock()->id
-               << " -> " << e_out->target_node.lock()->id
-               << " length: " << e_out->length;
-  }
+  init(node_ids.size(), edges_to_add.size(), nodes_from.data(), nodes_to.data(),
+       weights.data());
 }
 
-NodePtr DirectedGraph::operator[](const int &id) { return nodes[id]; }
+std::string DirectedGraph::to_str() const {
+
+  std::stringstream s;
+  for (int i = 0; i < _edges.size(); ++i) {
+    auto e = _edges[i].get();
+    auto len = e->get_length();
+    auto occ = e->is_occupied();
+    auto itl = e->is_interlaced();
+    s << "(" << e->get_id() << ") " << e->tail()->get_id() << "->"
+      << e->head()->get_id() << " / len: " << len << " / occ: " << occ
+      << " / itl: " << itl
+      << " head_dst_from_root: " << e->head()->get_dist_from_root()
+      << std::endl;
+  }
+  return s.str();
+};
 
 std::ostream &operator<<(std::ostream &os, const DirectedGraph &graph) {
-  for (auto e : graph.edges) {
-    auto out = e->target_node;
-    auto l = e->length;
-    auto o = e->occupied;
-    auto i = e->interlaced;
-    os << e->source_node.lock()->id << "->" << e->target_node.lock()->id
-       << " / len: " << l << " / occ: " << o << " / itl: " << i
-       << " / dst: " << e->target_node.lock()->dist_from_root << std::endl;
-  }
+  os << graph.to_str();
   return os;
+}
+
+int DirectedGraph::invert_edge(const int &edge_id) {
+  auto e = _edges[edge_id].get();
+  auto tail = e->tail();
+  auto head = e->head();
+  auto res = tail->del_out_edge(e->get_id());
+  if (res != 0) {
+    return res;
+  }
+  head->add_out_edge(e);
+  e->invert();
+  return 0;
 }

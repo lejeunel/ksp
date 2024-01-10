@@ -12,24 +12,24 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
   int n_edges = 1;
   int source_node = 0;
   int sink_node = 1;
-  auto graph = std::make_shared<DirectedGraph>(n_nodes, n_edges, nodes_in,
+  auto graph = std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
 
   SECTION("should retrieve a single path from source to sink") {
-    auto ksp = KSP(graph, source_node, sink_node);
+    auto ksp = KSP(std::move(graph), source_node, sink_node);
     auto result = ksp.run(1);
-    auto paths = result.value();
-    auto expected = std::vector<int>{0, 1};
+    auto paths = ksp.get_paths();
+    auto expected = Path(std::vector<int>{0, 1}, -1);
 
-    REQUIRE(*paths[0] == expected);
-    REQUIRE(paths[0]->get_length() == -1);
+    REQUIRE(paths[0] == expected);
+    REQUIRE(paths[0].get_length() == -1);
   }
 
   SECTION(""
           "Should detect that source has no leaving edges"
           "",
           "[validation]") {
-    auto ksp = KSP(graph, sink_node, source_node);
+    auto ksp = KSP(std::move(graph), sink_node, source_node);
     auto result = ksp.run(1);
 
     REQUIRE(result.has_value() == false);
@@ -40,7 +40,7 @@ TEST_CASE("Create graph and perform basic validation", "[one-path]") {
           "",
           "[validation]") {
 
-    auto ksp = KSP(graph, source_node, sink_node);
+    auto ksp = KSP(std::move(graph), source_node, sink_node);
     auto result = ksp.run(1);
     REQUIRE(result.has_value() == true);
   }

@@ -1,45 +1,31 @@
 #include "include/node.h"
+#include "include/edge.h"
+#include <exception>
 
-int Node::get_id() { return id; }
-
-void Node::add_out_edge(EdgePtr const &e) { out_edges.push_back(e); }
-
-EdgePtr Node::get_out_edge(const int &adj_id) {
+Edge *Node::get_out_edge(const int &adj_id) const {
   for (auto e : out_edges) {
-    if (e->target_node.lock()->id == adj_id) {
+    if (e->head()->get_id() == adj_id) {
       return e;
     }
   }
   return nullptr;
 }
 
-std::expected<Path, std::string> Node::make_path_from_root() {
-  EdgeList edge_list;
-  auto pred = predecessor;
-  int curr_id = id;
-  while (pred != nullptr) {
-    auto edge = pred->get_out_edge(curr_id);
-    if (edge == nullptr) {
-      return std::unexpected{"Could not reach root node from node: " +
-                             std::to_string(id)};
-    }
-    edge_list.push_back(edge);
-    curr_id = pred->id;
-    pred = pred->predecessor;
-  }
-
-  std::reverse(edge_list.begin(), edge_list.end());
-  return Path(edge_list);
-}
-
-void Node::del_out_edge(EdgePtr e) {
-  auto num_erased = std::erase(out_edges, e);
-}
-
-void Node::del_out_edges(const NodePtr &target_node) {
-  for (auto e : out_edges) {
-    if (e->target_node.lock()->id == target_node->id) {
-      std::erase(out_edges, e);
+int Node::del_out_edge(const int &edge_id) {
+  for (int i = 0; i < out_edges.size(); ++i) {
+    if (out_edges[i]->get_id() == edge_id) {
+      out_edges.erase(out_edges.begin() + i);
+      return 0;
     }
   }
+  return 1;
+}
+
+std::expected<std::vector<Edge *>, std::string> Node::get_out_edges() const {
+  if (out_edges.size() == 0) {
+    return std::unexpected{"Could not find out edges from node " +
+                           std::to_string(id)};
+  }
+
+  return out_edges;
 }
