@@ -1,4 +1,4 @@
-add_library(src
+add_library(ksp
     directed_graph.cpp
     bellman_ford.cpp
     dijkstra.cpp
@@ -16,6 +16,4 @@ add_executable(edksp
   main.cpp)
 
 
-target_link_libraries(edksp src)
-set_target_properties(edksp PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-  "${CMAKE_BINARY_DIR}/build")
+target_link_libraries(edksp ksp)

@@ -19,6 +19,4 @@ add_executable(tests
 ../src/logger.cpp
 )
 
-target_link_libraries(tests PUBLIC Catch2::Catch2 src)
-set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-  "${CMAKE_BINARY_DIR}/build")
+target_link_libraries(tests PUBLIC Catch2::Catch2 ksp)
