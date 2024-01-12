@@ -12,7 +12,7 @@ Edge *Node::get_out_edge(const int &adj_id) const {
 }
 
 int Node::del_out_edge(const int &edge_id) {
-  for (int i = 0; i < out_edges.size(); ++i) {
+  for (unsigned int i = 0; i < out_edges.size(); ++i) {
     if (out_edges[i]->get_id() == edge_id) {
       out_edges.erase(out_edges.begin() + i);
       return 0;

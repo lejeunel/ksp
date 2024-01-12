@@ -22,7 +22,7 @@ bool Path::operator==(const Path &rhs) const {
                << " and number of nodes=" << rhs.nodes.size();
     return false;
   }
-  for (int i = 0; i < rhs.nodes.size(); ++i) {
+  for (unsigned int i = 0; i < rhs.nodes.size(); ++i) {
     if ((nodes[i] != rhs.nodes[i])) {
       return false;
     }
@@ -32,7 +32,7 @@ bool Path::operator==(const Path &rhs) const {
 
 std::ostream &operator<<(std::ostream &os, const Path &path) {
   os << path.nodes[0];
-  for (int i = 1; i < path.nodes.size(); ++i) {
+  for (unsigned int i = 1; i < path.nodes.size(); ++i) {
     os << " -> " << path.nodes[i];
   }
 

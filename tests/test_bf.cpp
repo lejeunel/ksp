@@ -18,9 +18,7 @@ TEST_CASE("Bellman-Ford should retrieve correct path from source to sink",
   auto res = bellman_ford(*graph, source_node);
   REQUIRE(res.has_value() == true);
 
-  auto path =
-      Utils::make_single_source_shortest_path(*graph, source_node, sink_node)
-          .value();
+  auto path = Utils::make_shortest_path(*graph, source_node, sink_node).value();
   auto expected = Path(std::vector<int>{0, 3, 1, 2}, 3);
 
   REQUIRE(path == expected);

@@ -25,10 +25,10 @@ public:
   const_out_edges(const int &from) const {
     return _nodes[from]->get_out_edges();
   }
-  int invert_edge(const int &edge_id);
+  void invert_edge(const int &edge_id);
 
   std::string to_str() const;
-  const int num_of_nodes() const { return _nodes.size(); }
+  int num_of_nodes() const { return _nodes.size(); }
 
 private:
   void init(int n_nodes, int n_edges, int *node_from, int *node_to,

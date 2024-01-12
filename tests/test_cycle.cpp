@@ -10,7 +10,6 @@ TEST_CASE("Graph with cycle should return error", "[cycle]") {
   int n_nodes = 4;
   int n_edges = 5;
   int source_node = 0;
-  int sink_node = 2;
   auto graph = std::make_unique<DirectedGraph>(n_nodes, n_edges, nodes_in,
                                                nodes_out, weights);
   auto res = bellman_ford(*graph, source_node);

@@ -3,16 +3,6 @@
 #include "include/edge.h"
 #include "include/misc.h"
 
-std::vector<int> Utils::make_indices(const int &size) {
-  std::vector<int> indices;
-  indices.reserve(size);
-  for (size_t i = 0; i < size; ++i) {
-    indices.push_back(i);
-  }
-
-  return indices;
-}
-
 std::expected<std::vector<int>, std::string>
 Utils::topological_sort(const DirectedGraph &graph) {
 
@@ -65,8 +55,9 @@ Utils::topological_sort(const DirectedGraph &graph) {
   return ans;
 }
 
-std::expected<Path, std::string> Utils::make_single_source_shortest_path(
-    DirectedGraph &graph, const int &start_node_id, const int &end_node_id) {
+std::expected<Path, std::string>
+Utils::make_shortest_path(DirectedGraph &graph, const int &start_node_id,
+                          const int &end_node_id) {
   std::vector<int> nodes;
   scalar_t length = 0;
   auto curr_node = graph[end_node_id];
@@ -121,7 +112,7 @@ void Utils::reset_all_edges(DirectedGraph &graph) {
   }
 }
 
-void Utils::invert_edges_on_path(DirectedGraph &graph, Path &path) {
+void Utils::invert_edges_on_path(DirectedGraph &graph, const Path &path) {
   std::vector<Edge *> to_invert;
   for (int i = 0; i < path.num_nodes() - 1; ++i) {
     auto tail = graph[path[i]];
@@ -131,7 +122,7 @@ void Utils::invert_edges_on_path(DirectedGraph &graph, Path &path) {
 
   for (auto e : to_invert) {
     if (!e->is_interlaced()) {
-      auto res = graph.invert_edge(e->get_id());
+      graph.invert_edge(e->get_id());
     }
   }
 }
@@ -158,7 +149,7 @@ void Utils::set_all_edges_occupied(DirectedGraph &graph, const bool &val) {
   }
 }
 
-void Utils::set_edges_occupied_on_path(DirectedGraph &graph, Path &path,
+void Utils::set_edges_occupied_on_path(DirectedGraph &graph, const Path &path,
                                        const bool &val) {
   for (int i = 0; i < path.num_nodes() - 1; ++i) {
     auto tail = graph[path[i]];
@@ -167,7 +158,8 @@ void Utils::set_edges_occupied_on_path(DirectedGraph &graph, Path &path,
   }
 }
 
-void Utils::set_edges_interlaced_on_path(DirectedGraph &graph, Path &path) {
+void Utils::set_edges_interlaced_on_path(DirectedGraph &graph,
+                                         const Path &path) {
   for (int i = 0; i < path.num_nodes() - 2; ++i) {
     auto from = graph[path[i]];
     auto e = from->get_out_edge(path[i + 1]);

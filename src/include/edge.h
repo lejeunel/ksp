@@ -25,11 +25,11 @@ public:
 
 private:
   int id;
+  scalar_t length, orig_length;
+  Node *_tail, *_head;
   bool used = false;
   bool occupied = false;
   bool interlaced = false;
-  scalar_t length, orig_length;
-  Node *_tail, *_head;
 };
 
 #endif // EDGE_H_

@@ -15,7 +15,7 @@ std::expected<int, std::string> bellman_ford(DirectedGraph &graph,
   auto nodes_order = result_top_sort.value();
 
   LOG(DEBUG) << "[Bellman-Ford] Computing distances...";
-  for (int i = 0; i < nodes_order.size(); i++) {
+  for (size_t i = 0; i < nodes_order.size(); i++) {
     auto node = graph[nodes_order[i]];
 
     auto out_edges = node->get_out_edges();

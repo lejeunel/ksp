@@ -13,8 +13,8 @@ public:
                 RegexpSearcher const &a_dag_block_matcher,
                 RegexpMatcherGroups const &a_edge_matcher,
                 LineSplitter const &a_line_splitter)
-      : dag_block_matcher(a_dag_block_matcher), edge_matcher(a_edge_matcher),
-        line_splitter(a_line_splitter), file_parser(a_file_parser) {}
+      : file_parser(a_file_parser), dag_block_matcher(a_dag_block_matcher),
+        edge_matcher(a_edge_matcher), line_splitter(a_line_splitter) {}
 
   std::expected<DiGraphEdges, std::string> parse(std::string const &path) {
     auto str = file_parser.parse(path);
@@ -45,8 +45,8 @@ public:
 private:
   FileParser file_parser;
   RegexpSearcher dag_block_matcher;
-  LineSplitter line_splitter;
   RegexpMatcherGroups edge_matcher;
+  LineSplitter line_splitter;
 };
 
 #endif // DOT_PARSER_H_

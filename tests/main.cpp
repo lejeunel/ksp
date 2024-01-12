@@ -19,13 +19,10 @@ int main(int argc, char *argv[]) {
     return returnCode;
 
   if (verbosity == Catch::Verbosity::Quiet) {
-    std::cout << "quiet" << std::endl;
     configure_logger(el::Level::Error);
   } else if (verbosity == Catch::Verbosity::Normal) {
-    std::cout << "normal" << std::endl;
     configure_logger(el::Level::Debug);
   } else if (verbosity == Catch::Verbosity::High) {
-    std::cout << "high" << std::endl;
     configure_logger(el::Level::Trace);
   }
 

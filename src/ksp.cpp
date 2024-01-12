@@ -12,7 +12,6 @@ KSP::KSP(std::unique_ptr<DirectedGraph> a_graph, const int &a_source,
 
 std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
   int iter = 1;
-  scalar_t curr_cost;
 
   if (k < 1) {
     return std::unexpected{"Provide k>=1"};
@@ -23,8 +22,6 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     return std::unexpected{"source node has no leaving edges."};
   }
 
-  auto sink_node = (*graph)[sink];
-
   // Compute the distance of all the nodes from the source
   // using "generic" shortest paths algorithm
   auto result = bellman_ford(*graph, source);
@@ -33,7 +30,7 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
   }
 
   if (k == 1) {
-    auto res = Utils::make_single_source_shortest_path(*graph, source, sink);
+    auto res = Utils::make_shortest_path(*graph, source, sink);
     if (!res) {
       return std::unexpected{res.error()};
     }
@@ -61,7 +58,7 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
       return std::unexpected{res_djk.error()};
     }
 
-    auto res = Utils::make_single_source_shortest_path(*graph, source, sink);
+    auto res = Utils::make_shortest_path(*graph, source, sink);
     if (!res) {
       LOG(WARNING) << res.error();
       return std::unexpected{res.error()};

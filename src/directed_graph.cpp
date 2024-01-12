@@ -16,7 +16,6 @@ void DirectedGraph::init(int _n_nodes, int _n_edges, int *_node_from,
                                             _nodes[_node_to[i]].get(),
                                             _weights[i]));
     _nodes[_node_from[i]]->add_out_edge(_edges.back().get());
-    auto e = _edges.back().get();
   }
 }
 
@@ -46,8 +45,7 @@ DirectedGraph::DirectedGraph(DiGraphEdges const &edges_to_add) {
 std::string DirectedGraph::to_str() const {
 
   std::stringstream s;
-  for (int i = 0; i < _edges.size(); ++i) {
-    auto e = _edges[i].get();
+  for (auto &e : const_edges()) {
     auto len = e->get_length();
     auto occ = e->is_occupied();
     auto itl = e->is_interlaced();
@@ -65,15 +63,11 @@ std::ostream &operator<<(std::ostream &os, const DirectedGraph &graph) {
   return os;
 }
 
-int DirectedGraph::invert_edge(const int &edge_id) {
+void DirectedGraph::invert_edge(const int &edge_id) {
   auto e = _edges[edge_id].get();
   auto tail = e->tail();
   auto head = e->head();
-  auto res = tail->del_out_edge(e->get_id());
-  if (res != 0) {
-    return res;
-  }
+  tail->del_out_edge(e->get_id());
   head->add_out_edge(e);
   e->invert();
-  return 0;
 }

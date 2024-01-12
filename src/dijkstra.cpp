@@ -14,7 +14,6 @@ std::expected<int, std::string> dijkstra(DirectedGraph &graph,
   // pop each node in queue and relax
   // out_edges. If a relaxation occurs, enqueue
   // head node to queue.
-
   LOG(DEBUG) << "[Dijkstra] Computing distances...";
   while (!queue.is_empty()) {
     auto n = queue.extract_min();

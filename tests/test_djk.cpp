@@ -16,8 +16,7 @@ TEST_CASE("Dijkstra should retrieve correct path from source to sink", "djk") {
   auto res = dijkstra(*graph, source_node);
   REQUIRE(res.has_value() == true);
 
-  auto res_path =
-      Utils::make_single_source_shortest_path(*graph, source_node, sink_node);
+  auto res_path = Utils::make_shortest_path(*graph, source_node, sink_node);
   REQUIRE(res_path.has_value() == true);
   auto path = res_path.value();
 
