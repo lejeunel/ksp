@@ -10,7 +10,8 @@ The latter is implemented using a binary heap.
 
 * Installation
 #+begin_src sh
-cmake .
+mkdir build && cd build
+cmake ..
 make -j <n-jobs>
 #+end_src
 
@@ -25,6 +26,6 @@ optimal edge-disjoint paths using:
 
 * Testing
 #+begin_src sh
-make test -j <n-jobs>
-./build/test -s
+make tests -j <n-jobs>
+./tests/tests -s
 #+end_src
