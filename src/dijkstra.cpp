@@ -4,7 +4,7 @@ std::expected<int, std::string> dijkstra(DirectedGraph &graph,
                                          const int &source) {
 
   LOG(DEBUG) << "[Dijkstra] Initializing distances to source...";
-  Utils::initialize_distances_from_source(graph, source);
+  graph.initialize_distances_from_node(source);
   LOG(TRACE) << graph;
 
   auto queue = MinPriorityQueue();

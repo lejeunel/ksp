@@ -4,11 +4,11 @@ std::expected<int, std::string> bellman_ford(DirectedGraph &graph,
                                              const int &source) {
 
   LOG(DEBUG) << "[Bellman-Ford] Initializing distances to source...";
-  Utils::initialize_distances_from_source(graph, source);
+  graph.initialize_distances_from_node(source);
   LOG(TRACE) << graph;
 
   LOG(DEBUG) << "[Bellman-Ford] Computing topological sort...";
-  auto result_top_sort = Utils::topological_sort(graph);
+  auto result_top_sort = graph.topological_sort();
   if (!result_top_sort) {
     return std::unexpected{result_top_sort.error()};
   }

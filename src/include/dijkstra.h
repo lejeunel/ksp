@@ -3,8 +3,8 @@
 #include "common.h"
 #include "directed_graph.h"
 #include "easylogging++.h"
+#include "edge.h"
 #include "min_priority_queue.h"
-#include "utils.h"
 #include <expected>
 
 std::expected<int, std::string> dijkstra(DirectedGraph &a_graph,

@@ -5,6 +5,7 @@
 #include "easylogging++.h"
 #include "node.h"
 #include <functional>
+#include <queue>
 #include <ranges>
 #include <vector>
 
@@ -26,6 +27,20 @@ public:
     return _nodes[from]->get_out_edges();
   }
   void invert_edge(const int &edge_id);
+  void positivize_edges();
+  void clip_all_edges();
+  void set_all_edges_occupied(const bool &val);
+  void reset_all_edges();
+  void initialize_distances_from_node(const int &node_id);
+  std::expected<std::vector<int>, std::string> topological_sort();
+  void set_edges_occupied_on_path(const Path &p, const bool &val);
+  // a new shortest path that passes through an "occupied" edge
+  // must be detected. We call such edge "interlaced", and set
+  // "interlaced" flag to true.
+  void set_edges_interlaced_on_path(const Path &p);
+  void invert_edges_on_path(const Path &p);
+  std::expected<Path, std::string> make_shortest_path(const int &start_node_id,
+                                                      const int &end_node_id);
 
   std::string to_str() const;
   int num_of_nodes() const { return _nodes.size(); }

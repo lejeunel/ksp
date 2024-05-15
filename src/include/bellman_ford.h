@@ -2,9 +2,10 @@
 #define BELLMAN_FORD_H_
 
 #include "common.h"
+#include "directed_graph.h"
 #include "easylogging++.h"
+#include "edge.h"
 #include "node.h"
-#include "utils.h"
 #include <expected>
 
 std::expected<int, std::string> bellman_ford(DirectedGraph &graph,

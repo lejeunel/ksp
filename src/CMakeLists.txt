@@ -5,7 +5,6 @@ add_library(ksp
     path.cpp
     node.cpp
     edge.cpp
-    utils.cpp
     min_priority_queue.cpp
     logger.cpp
     easylogging++.cpp

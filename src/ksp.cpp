@@ -30,7 +30,7 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
   }
 
   if (k == 1) {
-    auto res = Utils::make_shortest_path(*graph, source, sink);
+    auto res = graph->make_shortest_path(source, sink);
     if (!res) {
       return std::unexpected{res.error()};
     }
@@ -44,9 +44,9 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     LOG(DEBUG) << "[KSP] iter: " << iter << "/" << k;
     // Use the current distance from the source to make all edge
     // lengths positive
-    Utils::positivize_edges(*graph);
+    graph->positivize_edges();
     // Fix numerical errors
-    Utils::clip_all_edges(*graph, 0.);
+    graph->clip_all_edges();
 
     LOG(TRACE) << "transformed graph:";
     LOG(TRACE) << *graph;
@@ -58,7 +58,7 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
       return std::unexpected{res_djk.error()};
     }
 
-    auto res = Utils::make_shortest_path(*graph, source, sink);
+    auto res = graph->make_shortest_path(source, sink);
     if (!res) {
       LOG(WARNING) << res.error();
       return std::unexpected{res.error()};
@@ -66,9 +66,9 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     auto path = res.value();
 
     // Invert all the edges along the best path
-    Utils::set_edges_interlaced_on_path(*graph, path);
-    Utils::set_edges_occupied_on_path(*graph, path, true);
-    Utils::invert_edges_on_path(*graph, path);
+    graph->set_edges_interlaced_on_path(path);
+    graph->set_edges_occupied_on_path(path, true);
+    graph->invert_edges_on_path(path);
 
     LOG(DEBUG) << "[KSP] done iter: " << iter;
 
@@ -85,14 +85,14 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
 
   // Put back the graph in its original state (i.e. invert edges which
   // have been inverted in the process)
-  Utils::reset_all_edges(*graph);
+  graph->reset_all_edges();
   LOG(TRACE) << "done resetting graph";
 
   retrieve_all_paths();
   for (auto p : paths)
     LOG(TRACE) << p;
 
-  Utils::set_all_edges_occupied(*graph, false);
+  graph->set_all_edges_occupied(false);
   return paths;
 }
 
