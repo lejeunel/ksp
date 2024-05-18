@@ -6,3 +6,6 @@
 /test
 /myeasylog.log
 /build/
+/src/CMakeCache.txt
+/src/cmake_install.cmake
+/src/myeasylog.log
