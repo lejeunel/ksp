@@ -41,6 +41,7 @@ public:
   void invert_edges_on_path(const Path &p);
   std::expected<Path, std::string> make_shortest_path(const int &start_node_id,
                                                       const int &end_node_id);
+  void relax_edges_from(const int &node_id);
 
   std::string to_str() const;
   int num_of_nodes() const { return _nodes.size(); }

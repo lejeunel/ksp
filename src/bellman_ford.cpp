@@ -14,25 +14,9 @@ std::expected<int, std::string> bellman_ford(DirectedGraph &graph,
   }
   auto nodes_order = result_top_sort.value();
 
-  LOG(DEBUG) << "[Bellman-Ford] Computing distances...";
+  LOG(DEBUG) << "[Bellman-Ford] Relaxing edges...";
   for (size_t i = 0; i < nodes_order.size(); i++) {
-    auto node = graph[nodes_order[i]];
-
-    auto out_edges = node->get_out_edges();
-    if (!out_edges) {
-      continue;
-    }
-
-    for (auto e : out_edges.value()) {
-
-      auto d = node->get_dist_from_root() + e->get_length();
-      auto src = e->tail();
-      auto tgt = e->head();
-      if (d < tgt->get_dist_from_root()) {
-        tgt->set_dist_from_root(d);
-        tgt->set_predecessor(src);
-      }
-    }
+    graph.relax_edges_from(nodes_order[i]);
   }
   LOG(DEBUG) << "[Bellman-Ford] done.";
   return 0;

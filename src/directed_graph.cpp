@@ -236,3 +236,23 @@ DirectedGraph::make_shortest_path(const int &start_node_id,
   std::reverse(nodes.begin(), nodes.end());
   return Path(nodes, length);
 }
+
+void DirectedGraph::relax_edges_from(const int &node_id) {
+  Node *node = _nodes[node_id].get();
+
+  auto out_edges = node->get_out_edges();
+  if (!out_edges) {
+    return;
+  }
+
+  for (auto e : out_edges.value()) {
+
+    auto d = node->get_dist_from_root() + e->get_length();
+    auto src = e->tail();
+    auto tgt = e->head();
+    if (d < tgt->get_dist_from_root()) {
+      tgt->set_dist_from_root(d);
+      tgt->set_predecessor(src);
+    }
+  }
+}
