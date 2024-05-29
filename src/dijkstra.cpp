@@ -8,8 +8,7 @@ std::expected<int, std::string> dijkstra(DirectedGraph &graph,
   LOG(TRACE) << graph;
 
   auto queue = MinPriorityQueue(graph);
-  auto visited = std::vector<uint8_t>(graph.num_of_nodes(), 0);
-  queue.add_with_distance_priority(source);
+  queue.add(source);
 
   // pop each node in queue and relax
   // out_edges. If a relaxation occurs, enqueue
@@ -18,14 +17,10 @@ std::expected<int, std::string> dijkstra(DirectedGraph &graph,
   while (!queue.is_empty()) {
     auto n = queue.extract_min();
 
-    if (visited[n]) {
-      continue;
-    }
-
     auto relaxed_target_nodes = graph.relax_edges_from(n);
     for (auto relaxed_target_node : relaxed_target_nodes) {
-      visited[n] = 1;
-      queue.add_with_distance_priority(relaxed_target_node);
+      queue.set_node_as_visited(n);
+      queue.add(relaxed_target_node);
     }
   }
   return 0;
