@@ -34,17 +34,16 @@ public:
   void initialize_distances_from_node(const int &node_id);
   std::expected<std::vector<int>, std::string> topological_sort();
   void set_edges_occupied_on_path(const Path &p, const bool &val);
-  // a new shortest path that passes through an "occupied" edge
-  // must be detected. We call such edge "interlaced", and set
-  // "interlaced" flag to true.
   void set_edges_interlaced_on_path(const Path &p);
   void invert_edges_on_path(const Path &p);
   std::expected<Path, std::string> make_shortest_path(const int &start_node_id,
                                                       const int &end_node_id);
-  void relax_edges_from(const int &node_id);
+  std::vector<int> relax_edges_from(const int &node_id);
 
   std::string to_str() const;
   int num_of_nodes() const { return _nodes.size(); }
+  bool compare_dist_from_root(const int &first_node_id,
+                              const int &second_node_id) const;
 
 private:
   void init(int n_nodes, int n_edges, int *node_from, int *node_to,

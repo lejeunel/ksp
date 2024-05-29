@@ -237,12 +237,14 @@ DirectedGraph::make_shortest_path(const int &start_node_id,
   return Path(nodes, length);
 }
 
-void DirectedGraph::relax_edges_from(const int &node_id) {
+std::vector<int> DirectedGraph::relax_edges_from(const int &node_id) {
+  std::vector<int> relaxed_nodes;
+
   Node *node = _nodes[node_id].get();
 
   auto out_edges = node->get_out_edges();
   if (!out_edges) {
-    return;
+    return relaxed_nodes;
   }
 
   for (auto e : out_edges.value()) {
@@ -253,6 +255,16 @@ void DirectedGraph::relax_edges_from(const int &node_id) {
     if (d < tgt->get_dist_from_root()) {
       tgt->set_dist_from_root(d);
       tgt->set_predecessor(src);
+      relaxed_nodes.push_back(tgt->get_id());
     }
   }
+
+  return relaxed_nodes;
+}
+
+bool DirectedGraph::compare_dist_from_root(const int &first_node_id,
+                                           const int &second_node_id) const {
+  auto first_node = _nodes[first_node_id].get();
+  auto second_node = _nodes[second_node_id].get();
+  return first_node->get_dist_from_root() > second_node->get_dist_from_root();
 }

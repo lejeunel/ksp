@@ -1,8 +1,8 @@
 #include "include/min_priority_queue.h"
 
-void MinPriorityQueue::add_with_distance_priority(const Node *n) { q.push(n); }
+void MinPriorityQueue::add_with_distance_priority(const int &id) { q.push(id); }
 
-const Node *MinPriorityQueue::extract_min() {
+int MinPriorityQueue::extract_min() {
   auto n = q.top();
   q.pop();
   return n;
