@@ -19,13 +19,6 @@ public:
   DirectedGraph(DiGraphEdges const &);
   friend std::ostream &operator<<(std::ostream &, const DirectedGraph &);
   Node *operator[](const int &id) { return _nodes[id].get(); }
-  auto &nodes() { return _nodes; }
-  auto &edges() { return _edges; }
-  const auto &const_edges() const { return _edges; }
-  const std::expected<std::vector<Edge *>, std::string>
-  const_out_edges(const int &from) const {
-    return _nodes[from]->get_out_edges();
-  }
   void invert_edge(const int &edge_id);
   void positivize_edges();
   void clip_all_edges();
@@ -33,9 +26,9 @@ public:
   void reset_all_edges();
   void initialize_distances_from_node(const int &node_id);
   std::expected<std::vector<int>, std::string> topological_sort();
-  void set_edges_occupied_on_path(const Path &p, const bool &val);
-  void set_edges_interlaced_on_path(const Path &p);
-  void invert_edges_on_path(const Path &p);
+  void set_edges_occupied_values(const Path &p, const bool &val);
+  void set_edges_interlaced_values(const Path &p);
+  void invert_edges(const Path &p);
   std::expected<Path, std::string> make_shortest_path(const int &start_node_id,
                                                       const int &end_node_id);
   std::vector<int> relax_edges_from(const int &node_id);

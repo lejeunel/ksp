@@ -66,9 +66,9 @@ std::expected<std::vector<Path>, std::string> KSP::run(const int &k) {
     auto path = res.value();
 
     // Invert all the edges along the best path
-    graph->set_edges_interlaced_on_path(path);
-    graph->set_edges_occupied_on_path(path, true);
-    graph->invert_edges_on_path(path);
+    graph->set_edges_interlaced_values(path);
+    graph->set_edges_occupied_values(path, true);
+    graph->invert_edges(path);
 
     LOG(DEBUG) << "[KSP] done iter: " << iter;
 

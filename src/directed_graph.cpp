@@ -45,7 +45,7 @@ DirectedGraph::DirectedGraph(DiGraphEdges const &edges_to_add) {
 std::string DirectedGraph::to_str() const {
 
   std::stringstream s;
-  for (auto &e : const_edges()) {
+  for (auto &e : _edges) {
     auto len = e->get_length();
     auto occ = e->is_occupied();
     auto itl = e->is_interlaced();
@@ -126,7 +126,7 @@ std::expected<std::vector<int>, std::string> DirectedGraph::topological_sort() {
   // compute in-degree of each node
   std::vector<int> indegree(n_nodes, 0);
   int tgt_id;
-  for (const auto &e : const_edges()) {
+  for (const auto &e : _edges) {
     tgt_id = e->head()->get_id();
     indegree[tgt_id]++;
   }
@@ -150,7 +150,7 @@ std::expected<std::vector<int>, std::string> DirectedGraph::topological_sort() {
 
     qrr.pop();
     sorted_nodes_id.push_back(node);
-    auto out_edges = const_out_edges(node);
+    auto out_edges = _nodes[node]->get_out_edges();
     if (out_edges) {
 
       for (auto &e : out_edges.value()) {
@@ -170,8 +170,8 @@ std::expected<std::vector<int>, std::string> DirectedGraph::topological_sort() {
   return sorted_nodes_id;
 }
 
-void DirectedGraph::set_edges_occupied_on_path(const Path &path,
-                                               const bool &val) {
+void DirectedGraph::set_edges_occupied_values(const Path &path,
+                                              const bool &val) {
   for (int i = 0; i < path.num_nodes() - 1; ++i) {
     auto tail = _nodes[path[i]].get();
     auto e = tail->get_out_edge(path[i + 1]);
@@ -179,7 +179,7 @@ void DirectedGraph::set_edges_occupied_on_path(const Path &path,
   }
 }
 
-void DirectedGraph::set_edges_interlaced_on_path(const Path &path) {
+void DirectedGraph::set_edges_interlaced_values(const Path &path) {
   for (int i = 0; i < path.num_nodes() - 2; ++i) {
     auto from = _nodes[path[i]].get();
     auto e = from->get_out_edge(path[i + 1]);
@@ -189,7 +189,7 @@ void DirectedGraph::set_edges_interlaced_on_path(const Path &path) {
   }
 }
 
-void DirectedGraph::invert_edges_on_path(const Path &path) {
+void DirectedGraph::invert_edges(const Path &path) {
   std::vector<Edge *> to_invert;
   for (int i = 0; i < path.num_nodes() - 1; ++i) {
     auto tail = _nodes[path[i]].get();
