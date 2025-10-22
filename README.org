@@ -21,11 +21,11 @@ Run the algorithm on ~example.dot~ using source node ~0~, sink node ~5~, and ret
 optimal edge-disjoint paths using:
 
 #+begin_src sh
-./build/edksp examples/example.dot 0 5 2
+edksp examples/example.dot 0 5 2
 #+end_src
 
 * Testing
 #+begin_src sh
-make tests -j <n-jobs>
-./tests/tests -s
+make test -j <n-jobs>
+./tests/test -s
 #+end_src
