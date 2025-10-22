@@ -14,5 +14,8 @@ add_library(ksp
 add_executable(edksp
   main.cpp)
 
-
 target_link_libraries(edksp ksp)
+
+install(TARGETS edksp
+  RUNTIME DESTINATION bin
+)

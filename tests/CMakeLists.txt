@@ -1,14 +1,7 @@
-include(FetchContent)
-fetchcontent_declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v3.4.0
-)
-
-fetchcontent_makeavailable(Catch2)
+find_package(Catch2 REQUIRED)
 
 # test suite
-add_executable(tests
+add_executable(test
   main.cpp
   test.cpp
   test_cycle.cpp
@@ -19,4 +12,4 @@ add_executable(tests
 ../src/logger.cpp
 )
 
-target_link_libraries(tests PUBLIC Catch2::Catch2 ksp)
+target_link_libraries(test PUBLIC Catch2::Catch2 ksp)
