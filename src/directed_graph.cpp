@@ -8,7 +8,7 @@ void DirectedGraph::init(int _n_nodes, int _n_edges, int *_node_from,
                          int *_node_to, scalar_t *_weights) {
   _nodes.reserve(_n_nodes);
   for (int i = 0; i < _n_nodes; i++) {
-    _nodes.push_back(std::make_unique<Node>(i));
+    _nodes[i] = std::make_unique<Node>(i);
   }
 
   for (int i = 0; i < _n_edges; i++) {
@@ -109,7 +109,7 @@ void DirectedGraph::reset_all_edges() {
 
 void DirectedGraph::initialize_distances_from_node(const int &node_id) {
 
-  for (auto &n : _nodes) {
+  for (auto &[_, n] : _nodes) {
     n->set_visited(false);
     if (n->get_id() == node_id) {
       n->set_dist_from_root(0);
@@ -264,7 +264,7 @@ std::vector<int> DirectedGraph::relax_edges_from(const int &node_id) {
 
 bool DirectedGraph::compare_dist_from_root(const int &first_node_id,
                                            const int &second_node_id) const {
-  auto first_node = _nodes[first_node_id].get();
-  auto second_node = _nodes[second_node_id].get();
+  auto first_node = _nodes.at(first_node_id).get();
+  auto second_node = _nodes.at(second_node_id).get();
   return first_node->get_dist_from_root() > second_node->get_dist_from_root();
 }

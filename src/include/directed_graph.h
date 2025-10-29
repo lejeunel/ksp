@@ -8,6 +8,7 @@
 #include <queue>
 #include <ranges>
 #include <vector>
+#include <map>
 
 class Path;
 class Edge;
@@ -41,7 +42,7 @@ public:
 private:
   void init(int n_nodes, int n_edges, int *node_from, int *node_to,
             scalar_t *weights);
-  std::vector<std::unique_ptr<Node>> _nodes;
+  std::unordered_map<int, std::unique_ptr<Node>> _nodes;
   std::vector<std::unique_ptr<Edge>> _edges;
 };
 
